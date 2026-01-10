@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Mesas Pro - Futurista</title>
+    <style>
+        :root {
+            --cor-disponivel: #00ff88;
+            --cor-ocupada: #ff0055;
+            --cor-texto: #e0e0e0;
+            --cor-fundo: #0a0b10;
+            --cor-primaria: #00d4ff;
+            --cor-neon-roxo: #bc13fe;
+            --vidro: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--cor-fundo);
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0b10 100%);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 { text-shadow: 0 0 10px var(--cor-primaria); letter-spacing: 2px; }
+
+        /* Grid de Mesas Principal */
+        .mapa-mesas {
+            display: grid;
+            grid-template-columns: repeat(4, 100px); 
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .mesa {
+            width: 100px; height: 100px;
+            background: var(--vidro);
+            border: 1px solid var(--cor-disponivel);
+            color: var(--cor-disponivel); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .mesa.ocupada { 
+            border-color: var(--cor-ocupada); 
+            color: var(--cor-ocupada);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
+        }
+
+        /* Modal Grande */
+        .modal-grande {
+            display: none; 
+            position: fixed; 
+            z-index: 100;
+            left: 0; top: 0; 
+            width: 100%; height: 100%;
+            background-color: var(--cor-fundo);
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .titulo-mesa-gigante { 
+            font-size: 2.5rem; 
+            margin-bottom: 30px; 
+            color: var(--cor-primaria);
+            text-shadow: 0 0 20px var(--cor-primaria);
+        }
+
+        .container-acoes {
+            display: flex; flex-direction: column; gap: 20px;
+            width: 100%; max-width: 400px; justify-content: center;
+        }
+
+        .btn-acao {
+            padding: 20px; font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-comanda { background: rgba(0, 212, 255, 0.1); color: var(--cor-primaria); box-shadow: 0 0 10px var(--cor-primaria); }
+        .btn-pedido { background: rgba(241, 196, 15, 0.1); color: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
+        .btn-extra { background: rgba(188, 19, 254, 0.1); color: var(--cor-neon-roxo); box-shadow: 0 0 10px var(--cor-neon-roxo); }
+
+        /* Campo de Status 3D Futurista */
+        .status-3d {
+            margin-top: 25px;
+            padding: 20px;
+            width: 100%;
+            max-width: 360px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #00ff88;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8), 2px 2px 10px rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        /* Campo Digitando solicitado */
+        .campo-digitando {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--cor-primaria);
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* --- CARDÁPIO E CARRINHO --- */
+        #modalCardapio {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--cor-fundo);
+            z-index: 300;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header-cardapio {
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; background: var(--cor-fundo); padding: 10px 0; z-index: 10;
+        }
+
+        .carrinho-info {
+            background: var(--cor-neon-roxo); color: white;
+            padding: 10px 20px; border-radius: 30px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 0 15px var(--cor-neon-roxo);
+        }
+
+        .grid-cardapio {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px; max-width: 1000px; margin: 20px auto;
+        }
+
+        .card-produto {
+            background: var(--vidro); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
+            padding: 10px; text-align: center; backdrop-filter: blur(5px);
+        }
+
+        .card-produto img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; filter: brightness(0.8); }
+
+        .btn-add {
+            background: var(--cor-disponivel); color: #000; border: none;
+            padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold;
+        }
+
+        /* --- TELA DETALHADA DO CARRINHO --- */
+        #modalCarrinhoDetalhes {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--cor-fundo);
+            z-index: 400;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .item-carrinho {
+            display: flex; align-items: center; gap: 15px;
+            padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .item-carrinho img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+
+        .controles-qtd { display: flex; align-items: center; gap: 10px; }
+        .btn-qtd { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--cor-primaria); background: transparent; color: white; cursor: pointer; }
+        .btn-excluir { background: none; border: none; color: var(--cor-ocupada); cursor: pointer; font-weight: bold; margin-left: auto; }
+
+        .btn-enviar-cozinha {
+            display: block; width: 100%; max-width: 300px; margin: 30px auto; padding: 20px;
+            background-color: var(--cor-disponivel); color: black; border: none;
+            border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 20px var(--cor-disponivel);
+        }
+
+        /* Rodapé com Cadeado */
+        .rodape-lock { margin-top: auto; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .img-cadeado { width: 50px; height: 50px; cursor: pointer; opacity: 0.6; filter: invert(1); }
+
+        /* Overlay de Senha */
+        .overlay-senha {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 500; flex-direction: column;
+            align-items: center; justify-content: center; color: white; backdrop-filter: blur(10px);
+        }
+
+        .input-senha { background: var(--vidro); color: white; border: 1px solid var(--cor-primaria); padding: 15px; font-size: 1.5rem; border-radius: 10px; margin-bottom: 20px; width: 180px; text-align: center; }
+
+        @media (max-width: 500px) { .mapa-mesas { grid-template-columns: repeat(2, 100px); } }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="pagina-inicial">
+        <h1>SISTEMA QUANTUM</h1>
+        <div class="mapa-mesas" id="gridMesas"></div>
+    </div>
+
+    <div id="modalMesa" class="modal-grande">
+        <h1 id="nomeMesaAtiva" class="titulo-mesa-gigante">Mesa 0</h1>
+        
+        <div class="container-acoes">
+            <button class="btn-acao btn-comanda" onclick="abrirCardapio()">Visualizar Cardápio</button>
+            <button class="btn-acao btn-pedido" onclick="alert('Solicitando Garçom...')">Chamar Garçom</button>
+            <button class="btn-acao btn-extra" onclick="alert('Gerando QR code...')">Realiza compra</button>
+        </div>
+
+        <div class="status-3d" id="textoStatus">Resultado do seu Pedido</div>
+        <div class="campo-digitando" id="textoDigitando">Processando Pedido...
+        </div>
+
+        <div class="rodape-lock">
+            <img src="https://cdn-icons-png.flaticon.com/512/61/61457.png" class="img-cadeado" onclick="abrirPromptSenha()">
+            <p style="font-size: 0.8rem;">Toque para sair</p>
+        </div>
+    </div>
+
+    <div id="modalCardapio">
+        <div class="header-cardapio">
+            <button onclick="fecharCardapio()" style="border:none; background:var(--vidro); color:white; padding:10px; border-radius:8px; cursor:pointer;">← Voltar</button>
+            <div class="carrinho-info" onclick="abrirCarrinhoDetalhes()">🛒 Total: R$ <span id="valorTotal">0.00</span></div>
+        </div>
+        <h2 style="text-align: center;">CARDÁPIO DIGITAL</h2>
+        <div class="grid-cardapio" id="listaCardapio"></div>
+    </div>
+
+    <div id="modalCarrinhoDetalhes">
+        <button onclick="fecharCarrinhoDetalhes()" style="border:none; background:var(--vidro); color:white; padding:10px; border-radius:8px; cursor:pointer; margin-bottom: 20px;">← Voltar ao Cardápio</button>
+        <h2>ITENS NO BUFFER</h2>
+        <div id="listaItensCarrinho"></div>
+        <div style="margin-top: 20px; font-size: 1.5rem; font-weight: bold; text-align: center;">Total: R$ <span id="valorTotalDetalhe">0.00</span></div>
+        
+        <button class="btn-enviar-cozinha" onclick="enviarParaCozinha()">Enviar para Cozinha</button>
+    </div>
+
+    <div id="overlaySenha" class="overlay-senha">
+        <h2>AUTENTICAÇÃO</h2>
+        <input type="password" id="campoSenha" class="input-senha" placeholder="****">
+        <button onclick="validarSaida()" style="padding:15px 30px; background:var(--cor-disponivel); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Confirmar</button>
+        <button onclick="fecharPromptSenha()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer;">Cancelar</button>
+        <p id="erro-msg" style="color:var(--cor-ocupada); display:none; margin-top:15px;">Senha incorreta!</p>
+    </div>
+
+    <script>
+        let totalCarrinho = 0;
+        let carrinhoItens = []; // Armazena os itens adicionados
+
+        // IDs das mesas no código: mesa-1, mesa-2...
+        const grid = document.getElementById('gridMesas');
+        for (let i = 1; i <= 20; i++) {
+            const div = document.createElement('div');
+            div.className = 'mesa';
+            div.id = `mesa-${i}`; // ID solicitado no código
+            div.innerText = `Mesa ${i}`;
+            div.onclick = () => entrarNaMesa(i);
+            grid.appendChild(div);
+        }
+
+        // Cardápio com 10 produtos
+        const produtos = [
+            {id: 0, nome: "Cerveja", preco: 12.00, img: "https://picsum.photos/200/150?random=0"},
+            {id: 1, nome: "Refrigerante", preco: 7.00, img: "https://picsum.photos/200/150?random=1"},
+            {id: 2, nome: "Batata Frita", preco: 35.00, img: "https://picsum.photos/200/150?random=2"},
+            {id: 3, nome: "Hambúrguer", preco: 28.00, img: "https://picsum.photos/200/150?random=3"},
+            {id: 4, nome: "Água", preco: 5.00, img: "https://picsum.photos/200/150?random=4"},
+            {id: 5, nome: "Suco Natural", preco: 9.00, img: "https://picsum.photos/200/150?random=5"},
+            {id: 6, nome: "Pizzeta", preco: 22.00, img: "https://picsum.photos/200/150?random=6"},
+            {id: 7, nome: "Pastel", preco: 8.00, img: "https://picsum.photos/200/150?random=7"},
+            {id: 8, nome: "Caipirinha", preco: 18.00, img: "https://picsum.photos/200/150?random=8"},
+            {id: 9, nome: "Sobremesa", preco: 15.00, img: "https://picsum.photos/200/150?random=9"}
+        ];
+
+        const gridCardapio = document.getElementById('listaCardapio');
+        produtos.forEach((prod, index) => {
+            gridCardapio.innerHTML += `
+                <div class="card-produto">
+                    <img src="${prod.img}" alt="${prod.nome}">
+                    <h3>${prod.nome}</h3>
+                    <p>R$ ${prod.preco.toFixed(2)}</p>
+                    <button class="btn-add" onclick="adicionarAoCarrinho(${prod.id})">+ Adicionar</button>
+                </div>
+            `;
+        });
+
+        function adicionarAoCarrinho(idProduto) {
+            const produto = produtos.find(p => p.id === idProduto);
+            const itemNoCarrinho = carrinhoItens.find(item => item.id === idProduto);
+
+            if (itemNoCarrinho) {
+                itemNoCarrinho.qtd++;
+            } else {
+                carrinhoItens.push({ ...produto, qtd: 1 });
+            }
+            atualizarCalculos();
+        }
+
+        function atualizarCalculos() {
+            totalCarrinho = carrinhoItens.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
+            document.getElementById('valorTotal').innerText = totalCarrinho.toFixed(2);
+            document.getElementById('valorTotalDetalhe').innerText = totalCarrinho.toFixed(2);
+            renderizarCarrinhoDetalhes();
+        }
+
+        function renderizarCarrinhoDetalhes() {
+            const container = document.getElementById('listaItensCarrinho');
+            container.innerHTML = "";
+            
+            carrinhoItens.forEach(item => {
+                container.innerHTML += `
+                    <div class="item-carrinho">
+                        <img src="${item.img}" alt="${item.nome}">
+                        <div>
+                            <strong>${item.nome}</strong><br>
+                            R$ ${(item.preco * item.qtd).toFixed(2)}
+                        </div>
+                        <div class="controles-qtd">
+                            <button class="btn-qtd" onclick="mudarQtd(${item.id}, -1)">-</button>
+                            <span>${item.qtd}</span>
+                            <button class="btn-qtd" onclick="mudarQtd(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="btn-excluir" onclick="removerItem(${item.id})">🗑️</button>
+                    </div>
+                `;
+            });
+        }
+
+        function mudarQtd(id, delta) {
+            const item = carrinhoItens.find(i => i.id === id);
+            if (item) {
+                item.qtd += delta;
+                if (item.qtd <= 0) {
+                    removerItem(id);
+                } else {
+                    atualizarCalculos();
+                }
+            }
+        }
+
+        function removerItem(id) {
+            carrinhoItens = carrinhoItens.filter(i => i.id !== id);
+            atualizarCalculos();
+        }
+
+        function abrirCarrinhoDetalhes() { document.getElementById('modalCarrinhoDetalhes').style.display = 'block'; }
+        function fecharCarrinhoDetalhes() { document.getElementById('modalCarrinhoDetalhes').style.display = 'none'; }
+
+        function abrirCardapio() { document.getElementById('modalCardapio').style.display = 'block'; }
+        function fecharCardapio() { document.getElementById('modalCardapio').style.display = 'none'; }
+
+        function entrarNaMesa(id) {
+            localStorage.setItem('mesaAtiva', id);
+            exibirModalMesa(id);
+            document.getElementById(`mesa-${id}`).classList.add('ocupada');
+        }
+
+        function exibirModalMesa(id) {
+            document.getElementById('pagina-inicial').style.display = 'none';
+            document.getElementById('modalMesa').style.display = 'flex';
+            document.getElementById('nomeMesaAtiva').innerText = `Mesa ${id}`;
+        }
+
+        function abrirPromptSenha() { document.getElementById('overlaySenha').style.display = 'flex'; document.getElementById('campoSenha').focus(); }
+        function fecharPromptSenha() { document.getElementById('overlaySenha').style.display = 'none'; }
+
+        function validarSaida() {
+            const id = localStorage.getItem('mesaAtiva');
+            const senhaDigitada = document.getElementById('campoSenha').value;
+            if (senhaDigitada === (100 + parseInt(id)).toString()) {
+                localStorage.removeItem('mesaAtiva');
+                location.reload();
+            } else {
+                document.getElementById('erro-msg').style.display = 'block';
+            }
+        }
+
+        // Função para enviar pedido e voltar para a tela da mesa
+        function enviarParaCozinha() {
+            if (carrinhoItens.length === 0) {
+                alert("O carrinho está vazio!");
+                return;
+            }
+            alert("Pedido enviado para a cozinha com sucesso!");
+            
+            // Troca o texto do campo 3D e do campo Digitando
+            document.getElementById('textoStatus').innerText = "🚨👇 Garson Estar 👇🚨";
+            document.getElementById('textoDigitando').innerText = "Digitando...";
+            
+            // Limpa o carrinho
+            carrinhoItens = [];
+            atualizarCalculos();
+            
+            // Fecha as telas de cardápio e volta para a mesa
+            fecharCarrinhoDetalhes();
+            fecharCardapio();
+        }
+
+        window.onload = () => {
+            const salva = localStorage.getItem('mesaAtiva');
+            if (salva) exibirModalMesa(salva);
+        };
+    </script>
+</body>
+</html>
