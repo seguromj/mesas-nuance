@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -29,9 +29,12 @@
             min-height: 100vh;
         }
 
-        h1 { text-shadow: 0 0 10px var(--cor-primaria); letter-spacing: 2px; }
+        h1 { 
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--cor-primaria); 
+            letter-spacing: 2px; 
+        }
 
-        /* Grid de Mesas Principal */
         .mapa-mesas {
             display: grid;
             grid-template-columns: repeat(4, 100px); 
@@ -48,6 +51,7 @@
             cursor: pointer; font-weight: bold; transition: 0.3s;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
             backdrop-filter: blur(5px);
+            font-size: 1.1rem;
         }
 
         .mesa.ocupada { 
@@ -56,7 +60,6 @@
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
         }
 
-        /* Modal Grande */
         .modal-grande {
             display: none; 
             position: fixed; 
@@ -72,6 +75,7 @@
         }
 
         .titulo-mesa-gigante { 
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem; 
             margin-bottom: 30px; 
             color: var(--cor-primaria);
@@ -83,18 +87,35 @@
             width: 100%; max-width: 400px; justify-content: center;
         }
 
+        .linha-botoes-quadrados {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
         .btn-acao {
             padding: 20px; font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
             font-weight: bold; cursor: pointer; transition: 0.3s;
             text-transform: uppercase;
         }
 
-        .btn-comanda { background: rgba(0, 212, 255, 0.1); color: var(--cor-primaria); box-shadow: 0 0 10px var(--cor-primaria); }
+        .btn-quadrado {
+            flex: 1;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9rem !important;
+        }
+
+        .btn-comanda { background: rgba(0, 212, 255, 0.1); color: var(--cor-primaria); box-shadow: 0 0 10px var(--cor-primaria); margin-bottom: 5px; }
         .btn-pedido { background: rgba(241, 196, 15, 0.1); color: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
         .btn-extra { background: rgba(188, 19, 254, 0.1); color: var(--cor-neon-roxo); box-shadow: 0 0 10px var(--cor-neon-roxo); }
 
-        /* Campo de Status 3D Futurista */
-        .status-3d {
+        .modal-status-unificado {
             margin-top: 25px;
             padding: 20px;
             width: 100%;
@@ -102,22 +123,29 @@
             background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
             text-align: center;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .status-principal {
             font-weight: bold;
             color: #00ff88;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8), 2px 2px 10px rgba(0, 255, 136, 0.2);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
-        /* Campo Digitando solicitado */
-        .campo-digitando {
-            margin-top: 10px;
-            font-size: 0.9rem;
+        .status-secundario {
+            font-size: 0.95rem;
             color: var(--cor-primaria);
             letter-spacing: 1px;
-            opacity: 0.8;
+            opacity: 0.9;
+            font-weight: 500;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
         }
 
-        /* --- CARDÁPIO E CARRINHO --- */
         #modalCardapio {
             display: none;
             position: fixed;
@@ -150,14 +178,17 @@
             padding: 10px; text-align: center; backdrop-filter: blur(5px);
         }
 
+        .card-produto h3 { font-size: 1.2rem; margin: 10px 0; }
+        .card-produto p { font-weight: bold; color: var(--cor-primaria); }
+
         .card-produto img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; filter: brightness(0.8); }
 
         .btn-add {
             background: var(--cor-disponivel); color: #000; border: none;
-            padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold;
+            padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold;
+            font-size: 0.9rem;
         }
 
-        /* --- TELA DETALHADA DO CARRINHO --- */
         #modalCarrinhoDetalhes {
             display: none;
             position: fixed;
@@ -171,14 +202,14 @@
 
         .item-carrinho {
             display: flex; align-items: center; gap: 15px;
-            padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .item-carrinho img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
 
-        .controles-qtd { display: flex; align-items: center; gap: 10px; }
-        .btn-qtd { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--cor-primaria); background: transparent; color: white; cursor: pointer; }
-        .btn-excluir { background: none; border: none; color: var(--cor-ocupada); cursor: pointer; font-weight: bold; margin-left: auto; }
+        .controles-qtd { display: flex; align-items: center; gap: 15px; }
+        .btn-qtd { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--cor-primaria); background: transparent; color: white; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .btn-excluir { background: none; border: none; color: var(--cor-ocupada); cursor: pointer; font-weight: bold; margin-left: auto; font-size: 1.2rem; }
 
         .btn-enviar-cozinha {
             display: block; width: 100%; max-width: 300px; margin: 30px auto; padding: 20px;
@@ -187,26 +218,73 @@
             box-shadow: 0 0 20px var(--cor-disponivel);
         }
 
-        /* Rodapé com Cadeado */
         .rodape-lock { margin-top: auto; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .img-cadeado { width: 50px; height: 50px; cursor: pointer; opacity: 0.6; filter: invert(1); }
 
-        /* Overlay de Senha */
         .overlay-senha {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 500; flex-direction: column;
             align-items: center; justify-content: center; color: white; backdrop-filter: blur(10px);
         }
 
-        .input-senha { background: var(--vidro); color: white; border: 1px solid var(--cor-primaria); padding: 15px; font-size: 1.5rem; border-radius: 10px; margin-bottom: 20px; width: 180px; text-align: center; }
+        .input-senha { background: var(--vidro); color: white; border: 1px solid var(--cor-primaria); padding: 15px; font-size: 1.5rem; border-radius: 10px; margin-bottom: 20px; width: 180px; text-align: center; font-family: sans-serif; }
 
-        /* Estilo do Modal de Entrada Bonito */
         .overlay-entrada {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 600; flex-direction: column;
             align-items: center; justify-content: center; color: white; backdrop-filter: blur(15px);
             border: 2px solid var(--cor-primaria);
         }
+
+        .dot {
+            height: 10px; width: 10px;
+            background-color: var(--cor-ocupada);
+            border-radius: 50%; display: inline-block;
+            margin: 0 3px;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 0.2; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px var(--cor-ocupada); }
+        }
+
+        #modalPagamento {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--cor-fundo);
+            z-index: 700;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .img-qr { width: 250px; height: 250px; margin: 20px 0; border: 5px solid white; border-radius: 10px; }
+
+        .btn-pagamento-feito {
+            padding: 20px 40px; font-size: 1.2rem; background: var(--cor-disponivel); color: black; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px var(--cor-disponivel); text-transform: uppercase;
+        }
+
+        #modalTituloPagamento {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--cor-fundo); z-index: 800; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; box-sizing: border-box;
+        }
+
+        .input-titulo {
+            background: var(--vidro); color: white; border: 2px solid var(--cor-primaria); padding: 20px; font-size: 1.2rem; border-radius: 10px; margin: 20px 0; width: 100%; max-width: 400px; text-align: center; outline: none;
+        }
+
+        .alerta-custom {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center;
+        }
+
+        .alerta-caixa {
+            background: var(--cor-fundo); border: 2px solid var(--cor-primaria); padding: 30px; border-radius: 20px; text-align: center; max-width: 300px; box-shadow: 0 0 30px var(--cor-primaria);
+        }
+
+        .alerta-caixa p { font-weight: bold; font-size: 1.2rem; margin-bottom: 25px; }
 
         @media (max-width: 500px) { .mapa-mesas { grid-template-columns: repeat(2, 100px); } }
     </style>
@@ -219,13 +297,20 @@
         <div class="mapa-mesas" id="gridMesas"></div>
     </div>
 
+    <div id="alertaCustom" class="alerta-custom">
+        <div class="alerta-caixa">
+            <p id="msgAlerta">Mensagem aqui</p>
+            <button class="btn-acao btn-comanda" onclick="fecharAlerta()" style="width: 100%; padding: 15px;">OK</button>
+        </div>
+    </div>
+
     <div id="overlayEntrada" class="overlay-entrada">
         <h2 id="tituloEntradaMesa">ACESSO MESA</h2>
-        <p style="color: var(--cor-primaria); margin-bottom: 10px;">Insira o código de ativação</p>
+        <p style="color: var(--cor-primaria); margin-bottom: 10px; font-weight: bold;">Insira o código de ativação</p>
         <input type="password" id="campoSenhaEntrada" class="input-senha" placeholder="****">
-        <button onclick="confirmarEntrada()" style="padding:15px 30px; background:var(--cor-primaria); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold; box-shadow: 0 0 15px var(--cor-primaria);">ATIVAR MESA</button>
-        <button onclick="fecharModalEntrada()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer; opacity: 0.6;">CANCELAR</button>
-        <p id="erro-msg-entrada" style="color:var(--cor-ocupada); display:none; margin-top:15px;">CÓDIGO INVÁLIDO!</p>
+        <button onclick="confirmarEntrada()" style="padding:15px 30px; background:var(--cor-primaria); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold; box-shadow: 0 0 15px var(--cor-primaria); font-size: 1rem;">ATIVAR MESA</button>
+        <button onclick="fecharModalEntrada()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer; opacity: 0.8; font-weight: bold;">CANCELAR</button>
+        <p id="erro-msg-entrada" style="color:var(--cor-ocupada); display:none; margin-top:15px; font-weight: bold;">CÓDIGO INVÁLIDO!</p>
     </div>
 
     <div id="modalMesa" class="modal-grande">
@@ -233,82 +318,113 @@
         
         <div class="container-acoes">
             <button class="btn-acao btn-comanda" onclick="abrirCardapio()">Visualizar Cardápio</button>
-            <button class="btn-acao btn-pedido" onclick="alert('Solicitando Garçom...')">Chamar Garçom</button>
-            <button class="btn-acao btn-extra" onclick="alert('Gerando QR code...')">Realiza compra</button>
+            
+            <div class="linha-botoes-quadrados">
+                <button class="btn-acao btn-pedido btn-quadrado" onclick="exibirAlerta('Solicitando Garçom...')">Chamar Garçom</button>
+                <button class="btn-acao btn-extra btn-quadrado" onclick="abrirPagamento()">Realizar Pagamento</button>
+            </div>
         </div>
 
-        <div class="status-3d" id="textoStatus">Resultado do seu Pedido</div>
-        <div class="campo-digitando" id="textoDigitando">Processando Pedido...
+        <div class="modal-status-unificado">
+            <div class="status-principal" id="textoStatus">Resultado do seu Pedido</div>
+            <div class="status-secundario" id="textoDigitando">Processando Pedido...</div>
         </div>
 
         <div class="rodape-lock">
             <img src="https://cdn-icons-png.flaticon.com/512/61/61457.png" class="img-cadeado" onclick="abrirPromptSenha()">
-            <p style="font-size: 0.8rem;">Toque para sair</p>
+            <p style="font-size: 0.9rem; font-weight: bold; margin-top: 10px;">Toque para sair</p>
         </div>
     </div>
 
     <div id="modalCardapio">
         <div class="header-cardapio">
-            <button onclick="fecharCardapio()" style="border:none; background:var(--vidro); color:white; padding:10px; border-radius:8px; cursor:pointer;">← Voltar</button>
+            <button onclick="fecharCardapio()" style="border:none; background:var(--vidro); color:white; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">← Voltar</button>
             <div class="carrinho-info" onclick="abrirCarrinhoDetalhes()">🛒 Total: R$ <span id="valorTotal">0.00</span></div>
         </div>
-        <h2 style="text-align: center;">CARDÁPIO DIGITAL</h2>
+        <h2 style="text-align: center; font-family: 'Orbitron', sans-serif;">CARDÁPIO DIGITAL</h2>
         <div class="grid-cardapio" id="listaCardapio"></div>
     </div>
 
     <div id="modalCarrinhoDetalhes">
-        <button onclick="fecharCarrinhoDetalhes()" style="border:none; background:var(--vidro); color:white; padding:10px; border-radius:8px; cursor:pointer; margin-bottom: 20px;">← Voltar ao Cardápio</button>
-        <h2>ITENS NO BUFFER</h2>
+        <button onclick="fecharCarrinhoDetalhes()" style="border:none; background:var(--vidro); color:white; padding:10px 15px; border-radius:8px; cursor:pointer; margin-bottom: 20px; font-weight: bold;">← Voltar ao Cardápio</button>
+        <h2 style="font-family: 'Orbitron', sans-serif;">ITENS NO BUFFER</h2>
         <div id="listaItensCarrinho"></div>
-        <div style="margin-top: 20px; font-size: 1.5rem; font-weight: bold; text-align: center;">Total: R$ <span id="valorTotalDetalhe">0.00</span></div>
-        
+        <div style="margin-top: 20px; font-size: 1.8rem; font-weight: bold; text-align: center; color: var(--cor-disponivel);">Total: R$ <span id="valorTotalDetalhe">0.00</span></div>
         <button class="btn-enviar-cozinha" onclick="enviarParaCozinha()">Enviar para Cozinha</button>
     </div>
 
     <div id="overlaySenha" class="overlay-senha">
-        <h2>AUTENTICAÇÃO</h2>
+        <h2 style="font-family: 'Orbitron', sans-serif;">AUTENTICAÇÃO</h2>
         <input type="password" id="campoSenha" class="input-senha" placeholder="****">
-        <button onclick="validarSaida()" style="padding:15px 30px; background:var(--cor-disponivel); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Confirmar</button>
-        <button onclick="fecharPromptSenha()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer;">Cancelar</button>
-        <p id="erro-msg" style="color:var(--cor-ocupada); display:none; margin-top:15px;">Senha incorreta!</p>
+        <button onclick="validarSaida()" style="padding:15px 30px; background:var(--cor-disponivel); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size: 1rem;">Confirmar</button>
+        <button onclick="fecharPromptSenha()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer; font-weight: bold;">Cancelar</button>
+        <p id="erro-msg" style="color:var(--cor-ocupada); display:none; margin-top:15px; font-weight: bold;">Senha incorreta!</p>
+    </div>
+
+    <div id="modalPagamento">
+        <h2 style="color: var(--cor-primaria); font-size: 1.6rem; line-height: 1.4;">Desejo fazer o pagamento com <strong style="color: #ff4444; text-decoration: underline;">dinheiro</strong>?<br> Dirija ao Caixa.</h2>
+        <h3 style="margin-top: 25px; font-size: 1.4rem;">OU<br>Pague através do QR code</h3>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=PagamentoSimulado" alt="QR Code Pagamento" class="img-qr">
+        <button class="btn-pagamento-feito" onclick="abrirIdentificacaoTitulo()">Pagamento feito</button>
+    </div>
+
+    <div id="modalTituloPagamento">
+        <h2 style="color: var(--cor-primaria); font-family: 'Orbitron', sans-serif;">Digitar o nome completo do título do pagamento.</h2>
+        <input type="text" id="campoNomeTitulo" class="input-titulo" placeholder="Nome Completo">
+        <button class="btn-pagamento-feito" onclick="finalizarProcessoPagamento()">Confirmar Identificação</button>
+        <button onclick="fecharIdentificacaoTitulo()" style="background:none; color:white; border:none; margin-top:20px; cursor:pointer; opacity: 0.8; font-weight: bold;">Voltar ao QR Code</button>
     </div>
 
     <script>
         let totalCarrinho = 0;
-        let carrinhoItens = []; // Armazena os itens adicionados
-        let mesaPendente = null; // Armazena a mesa que está tentando acessar
+        let carrinhoItens = []; 
+        let mesaPendente = null; 
 
-        // IDs das mesas no código: mesa-1, mesa-2...
+        // CONFIGURAÇÃO DO FORMULÁRIO
+        const URL_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSetGo75gSCaeTLqJK_fsSL1JmLU3ASTDe9EPI1EF2CentjYhw/formResponse";
+        const ENTRY_PEDIDOS = "entry.791102184"; // Coluna B
+        const ENTRY_ID_MESA = "entry.1477713835";  // Coluna C
+        const ENTRY_VALOR_TOTAL = "entry.547254151"; // Coluna D
+        const ENTRY_PAGAMENTO_NOME_MESA = "entry.1293792471"; // Coluna E
+
+        function exibirAlerta(msg) {
+            document.getElementById('msgAlerta').innerText = msg;
+            document.getElementById('alertaCustom').style.display = 'flex';
+        }
+
+        function fecharAlerta() {
+            document.getElementById('alertaCustom').style.display = 'none';
+        }
+
         const grid = document.getElementById('gridMesas');
         for (let i = 1; i <= 20; i++) {
             const div = document.createElement('div');
             div.className = 'mesa';
-            div.id = `mesa-${i}`; // ID solicitado no código
+            div.id = `mesa-${i}`; 
             div.innerText = `Mesa ${i}`;
             div.onclick = () => entrarNaMesa(i);
             grid.appendChild(div);
         }
 
-        // Cardápio com 10 produtos
         const produtos = [
-            {id: 0, nome: "Cerveja", preco: 12.00, img: "https://picsum.photos/200/150?random=0"},
-            {id: 1, nome: "Refrigerante", preco: 7.00, img: "https://picsum.photos/200/150?random=1"},
-            {id: 2, nome: "Batata Frita", preco: 35.00, img: "https://picsum.photos/200/150?random=2"},
-            {id: 3, nome: "Hambúrguer", preco: 28.00, img: "https://picsum.photos/200/150?random=3"},
-            {id: 4, nome: "Água", preco: 5.00, img: "https://picsum.photos/200/150?random=4"},
-            {id: 5, nome: "Suco Natural", preco: 9.00, img: "https://picsum.photos/200/150?random=5"},
-            {id: 6, nome: "Pizzeta", preco: 22.00, img: "https://picsum.photos/200/150?random=6"},
-            {id: 7, nome: "Pastel", preco: 8.00, img: "https://picsum.photos/200/150?random=7"},
-            {id: 8, nome: "Caipirinha", preco: 18.00, img: "https://picsum.photos/200/150?random=8"},
-            {id: 9, nome: "Sobremesa", preco: 15.00, img: "https://picsum.photos/200/150?random=9"}
+            {id: 0, name: "Cerveja", preco: 12.00, img: "https://picsum.photos/200/150?random=0"},
+            {id: 1, name: "Refrigerante", preco: 7.00, img: "https://picsum.photos/200/150?random=1"},
+            {id: 2, name: "Batata Frita", preco: 35.00, img: "https://picsum.photos/200/150?random=2"},
+            {id: 3, name: "Hambúrguer", preco: 28.00, img: "https://picsum.photos/200/150?random=3"},
+            {id: 4, name: "Água", preco: 5.00, img: "https://picsum.photos/200/150?random=4"},
+            {id: 5, name: "Suco Natural", preco: 9.00, img: "https://picsum.photos/200/150?random=5"},
+            {id: 6, name: "Pizzeta", preco: 22.00, img: "https://picsum.photos/200/150?random=6"},
+            {id: 7, name: "Pastel", preco: 8.00, img: "https://picsum.photos/200/150?random=7"},
+            {id: 8, name: "Caipirinha", preco: 18.00, img: "https://picsum.photos/200/150?random=8"},
+            {id: 9, name: "Sobremesa", preco: 15.00, img: "https://picsum.photos/200/150?random=9"}
         ];
 
         const gridCardapio = document.getElementById('listaCardapio');
         produtos.forEach((prod, index) => {
             gridCardapio.innerHTML += `
                 <div class="card-produto">
-                    <img src="${prod.img}" alt="${prod.nome}">
-                    <h3>${prod.nome}</h3>
+                    <img src="${prod.img}" alt="${prod.name}">
+                    <h3>${prod.name}</h3>
                     <p>R$ ${prod.preco.toFixed(2)}</p>
                     <button class="btn-add" onclick="adicionarAoCarrinho(${prod.id})">+ Adicionar</button>
                 </div>
@@ -318,12 +434,7 @@
         function adicionarAoCarrinho(idProduto) {
             const produto = produtos.find(p => p.id === idProduto);
             const itemNoCarrinho = carrinhoItens.find(item => item.id === idProduto);
-
-            if (itemNoCarrinho) {
-                itemNoCarrinho.qtd++;
-            } else {
-                carrinhoItens.push({ ...produto, qtd: 1 });
-            }
+            if (itemNoCarrinho) { itemNoCarrinho.qtd++; } else { carrinhoItens.push({ ...produto, qtd: 1 }); }
             atualizarCalculos();
         }
 
@@ -337,36 +448,14 @@
         function renderizarCarrinhoDetalhes() {
             const container = document.getElementById('listaItensCarrinho');
             container.innerHTML = "";
-            
             carrinhoItens.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-carrinho">
-                        <img src="${item.img}" alt="${item.nome}">
-                        <div>
-                            <strong>${item.nome}</strong><br>
-                            R$ ${(item.preco * item.qtd).toFixed(2)}
-                        </div>
-                        <div class="controles-qtd">
-                            <button class="btn-qtd" onclick="mudarQtd(${item.id}, -1)">-</button>
-                            <span>${item.qtd}</span>
-                            <button class="btn-qtd" onclick="mudarQtd(${item.id}, 1)">+</button>
-                        </div>
-                        <button class="btn-excluir" onclick="removerItem(${item.id})">🗑️</button>
-                    </div>
-                `;
+                container.innerHTML += `<div class="item-carrinho"><img src="${item.img}"><div style="flex-grow: 1;"><strong>${item.name}</strong><br><span style="color: var(--cor-primaria);">R$ ${(item.preco * item.qtd).toFixed(2)}</span></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd(${item.id}, -1)">-</button><span>${item.qtd}</span><button class="btn-qtd" onclick="mudarQtd(${item.id}, 1)">+</button></div><button class="btn-excluir" onclick="removerItem(${item.id})">🗑️</button></div>`;
             });
         }
 
         function mudarQtd(id, delta) {
             const item = carrinhoItens.find(i => i.id === id);
-            if (item) {
-                item.qtd += delta;
-                if (item.qtd <= 0) {
-                    removerItem(id);
-                } else {
-                    atualizarCalculos();
-                }
-            }
+            if (item) { item.qtd += delta; if (item.qtd <= 0) removerItem(id); else atualizarCalculos(); }
         }
 
         function removerItem(id) {
@@ -376,39 +465,57 @@
 
         function abrirCarrinhoDetalhes() { document.getElementById('modalCarrinhoDetalhes').style.display = 'block'; }
         function fecharCarrinhoDetalhes() { document.getElementById('modalCarrinhoDetalhes').style.display = 'none'; }
-
         function abrirCardapio() { document.getElementById('modalCardapio').style.display = 'block'; }
         function fecharCardapio() { document.getElementById('modalCardapio').style.display = 'none'; }
+        function abrirPagamento() { document.getElementById('modalPagamento').style.display = 'flex'; }
+        function fecharPagamento() { document.getElementById('modalPagamento').style.display = 'none'; }
 
-        // --- NOVA LÓGICA DE ENTRADA PERSONALIZADA ---
+        function abrirIdentificacaoTitulo() {
+            document.getElementById('modalTituloPagamento').style.display = 'flex';
+            document.getElementById('campoNomeTitulo').value = "";
+            document.getElementById('campoNomeTitulo').focus();
+        }
+
+        function fecharIdentificacaoTitulo() { document.getElementById('modalTituloPagamento').style.display = 'none'; }
+
+        function finalizarProcessoPagamento() {
+            const nome = document.getElementById('campoNomeTitulo').value;
+            const mesaNum = localStorage.getItem('mesaAtiva');
+            const idMesaUnico = 100 + parseInt(mesaNum);
+            
+            if(nome.trim() === "") { exibirAlerta("Por favor, digite o nome completo."); return; }
+
+            // Envia para o formulário (Coluna C: ID da Mesa, Coluna E: Nome)
+            const urlFinal = `${URL_FORM}?${ENTRY_ID_MESA}=${encodeURIComponent(idMesaUnico)}&${ENTRY_PAGAMENTO_NOME_MESA}=${encodeURIComponent(nome)}&submit=Submit`;
+            
+            fetch(urlFinal, { mode: 'no-cors' }).then(() => {
+                exibirAlerta(`Pagamento identificado para: ${nome}. Aguarde a confirmação no sistema.`);
+                fecharIdentificacaoTitulo();
+                fecharPagamento();
+            }).catch(() => {
+                exibirAlerta("Erro ao registrar pagamento.");
+            });
+        }
+
         function entrarNaMesa(id) {
             mesaPendente = id;
             document.getElementById('tituloEntradaMesa').innerText = `ACESSO MESA ${id}`;
             document.getElementById('overlayEntrada').style.display = 'flex';
             document.getElementById('campoSenhaEntrada').value = "";
             document.getElementById('erro-msg-entrada').style.display = 'none';
-            document.getElementById('campoSenhaEntrada').focus();
         }
 
-        function fecharModalEntrada() {
-            document.getElementById('overlayEntrada').style.display = 'none';
-            mesaPendente = null;
-        }
+        function fecharModalEntrada() { document.getElementById('overlayEntrada').style.display = 'none'; }
 
         function confirmarEntrada() {
             const senhaDigitada = document.getElementById('campoSenhaEntrada').value;
-            const senhaCorreta = (100 + parseInt(mesaPendente)).toString();
-
-            if (senhaDigitada === senhaCorreta) {
+            if (senhaDigitada === (100 + parseInt(mesaPendente)).toString()) {
                 localStorage.setItem('mesaAtiva', mesaPendente);
                 exibirModalMesa(mesaPendente);
                 document.getElementById(`mesa-${mesaPendente}`).classList.add('ocupada');
                 fecharModalEntrada();
-            } else {
-                document.getElementById('erro-msg-entrada').style.display = 'block';
-            }
+            } else { document.getElementById('erro-msg-entrada').style.display = 'block'; }
         }
-        // --------------------------------------------
 
         function exibirModalMesa(id) {
             document.getElementById('pagina-inicial').style.display = 'none';
@@ -416,39 +523,40 @@
             document.getElementById('nomeMesaAtiva').innerText = `Mesa ${id}`;
         }
 
-        function abrirPromptSenha() { document.getElementById('overlaySenha').style.display = 'flex'; document.getElementById('campoSenha').focus(); }
+        function abrirPromptSenha() { document.getElementById('overlaySenha').style.display = 'flex'; }
         function fecharPromptSenha() { document.getElementById('overlaySenha').style.display = 'none'; }
 
         function validarSaida() {
             const id = localStorage.getItem('mesaAtiva');
-            const senhaDigitada = document.getElementById('campoSenha').value;
-            if (senhaDigitada === (100 + parseInt(id)).toString()) {
+            if (document.getElementById('campoSenha').value === (100 + parseInt(id)).toString()) {
                 localStorage.removeItem('mesaAtiva');
                 location.reload();
-            } else {
-                document.getElementById('erro-msg').style.display = 'block';
-            }
+            } else { document.getElementById('erro-msg').style.display = 'block'; }
         }
 
-        // Função para enviar pedido e voltar para a tela da mesa
         function enviarParaCozinha() {
-            if (carrinhoItens.length === 0) {
-                alert("O carrinho está vazio!");
-                return;
-            }
-            alert("Pedido enviado para a cozinha com sucesso!");
-            
-            // Troca o texto do campo 3D e do campo Digitando
-            document.getElementById('textoStatus').innerText = "🚨👇 Garson Estar 👇🚨";
-            document.getElementById('textoDigitando').innerText = "Digitando...";
-            
-            // Limpa o carrinho
-            carrinhoItens = [];
-            atualizarCalculos();
-            
-            // Fecha as telas de cardápio e volta para a mesa
-            fecharCarrinhoDetalhes();
-            fecharCardapio();
+            if (carrinhoItens.length === 0) { exibirAlerta("O carrinho está vazio!"); return; }
+
+            const mesaNum = localStorage.getItem('mesaAtiva');
+            const idMesaUnico = 100 + parseInt(mesaNum);
+            const valorTotalFinal = totalCarrinho.toFixed(2);
+
+            const listaProdutos = carrinhoItens.map(item => `${item.name} (x${item.qtd})`).join(", ");
+
+            // Envia para o formulário (Coluna B: Produtos, Coluna C: ID da Mesa, Coluna D: Valor Total)
+            const urlFinal = `${URL_FORM}?${ENTRY_PEDIDOS}=${encodeURIComponent(listaProdutos)}&${ENTRY_ID_MESA}=${encodeURIComponent(idMesaUnico)}&${ENTRY_VALOR_TOTAL}=${encodeURIComponent(valorTotalFinal)}&submit=Submit`;
+
+            fetch(urlFinal, { mode: 'no-cors' }).then(() => {
+                exibirAlerta("Pedido enviado para a cozinha com sucesso!");
+                document.getElementById('textoStatus').innerHTML = `🚨👇 Garçom Estar 👇🚨<br><span class="dot"></span><span class="dot"></span><span class="dot"></span>`;
+                document.getElementById('textoDigitando').innerText = "Digitando...";
+                carrinhoItens = [];
+                atualizarCalculos();
+                fecharCarrinhoDetalhes();
+                fecharCardapio();
+            }).catch(() => {
+                exibirAlerta("Erro ao enviar pedido.");
+            });
         }
 
         window.onload = () => {
