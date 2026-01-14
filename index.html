@@ -17,6 +17,7 @@
             --border-glass: rgba(0, 243, 255, 0.2);
             --font-main: 'Inter', sans-serif;
             --font-tech: 'Orbitron', sans-serif;
+            --alert-red: #ff003c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,6 +65,18 @@
             min-height: 200px;
         }
 
+        /* ANIMAÇÃO DE PISCAR VERMELHO */
+        @keyframes pulse-red {
+            0% { border-color: var(--border-glass); box-shadow: 0 0 5px transparent; }
+            50% { border-color: var(--alert-red); box-shadow: 0 0 20px var(--alert-red); background: rgba(255, 0, 60, 0.1); }
+            100% { border-color: var(--border-glass); box-shadow: 0 0 5px transparent; }
+        }
+
+        .status-conta {
+            animation: pulse-red 1.5s infinite;
+            border-width: 2px !important;
+        }
+
         .mesa-card:hover {
             transform: translateY(-5px);
             border-color: var(--neon-blue);
@@ -100,7 +113,27 @@
             font-family: var(--font-tech);
         }
 
-        /* MODAL */
+        .btn-ex {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: var(--font-tech);
+            font-size: 0.7rem;
+            padding: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .btn-ex:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
         .modal-fullscreen {
             display: none;
             position: fixed;
@@ -155,6 +188,8 @@
 
 <div class="container" id="grid-mesas"></div>
 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 <div id="modal" class="modal-fullscreen">
     <div class="modal-content">
         <div class="modal-header">
@@ -169,7 +204,29 @@
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAb5Ou99MR6hD2_t7XPdZRzYBf-4ZE7HkqfSZ7PwU0POKTHfs6232ezYPT3yYzbKLzAX3Muwp4BxPo/pub?output=csv';
     const grid = document.getElementById('grid-mesas');
 
-    // Inicializa os cards
+    // Função para enviar os dados ao Google Form
+    function enviarEX(idMesa) {
+        const prefixoID = `EX${idMesa}`;
+        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdqJeSChWOP4EhrJZO3T2HERuGgU9Tjax7GVM-pTH0MBpVXGw/formResponse";
+        
+        // Criar formulário temporário para submissão no iframe oculto
+        const tempForm = document.createElement("form");
+        tempForm.action = formURL;
+        tempForm.method = "POST";
+        tempForm.target = "hidden_iframe";
+
+        const input = document.createElement("input");
+        input.name = "entry.1646513792";
+        input.value = prefixoID;
+        
+        tempForm.appendChild(input);
+        document.body.appendChild(tempForm);
+        tempForm.submit();
+        document.body.removeChild(tempForm);
+
+        alert(`Enviado: ${prefixoID}`);
+    }
+
     for (let i = 1; i <= 20; i++) {
         let idMesa = 100 + i;
         let div = document.createElement('div');
@@ -181,6 +238,7 @@
                 <i class="fas fa-microchip"></i>
             </div>
             <div class="resultado-b" id="res-${idMesa}">Sincronizando...</div>
+            <button class="btn-ex" onclick="event.stopPropagation(); enviarEX(${idMesa})">EX${idMesa}</button>
             <div class="id-label">LOG ID: ${idMesa}</div>
         `;
         div.onclick = () => abrirModal(i, idMesa);
@@ -193,13 +251,13 @@
             const csvText = await resp.text();
             const linhas = parseCSV(csvText);
 
-            // Objeto temporário para acumular os pedidos de cada ID
             const acumulador = {};
+            const statusConta = {}; // Para armazenar quem pediu conta
 
-            // Varre a planilha inteira (ignorando o cabeçalho se houver)
             linhas.forEach(linha => {
                 let conteudoB = (linha[1] || "").trim().replace(/^"|"$/g, '');
                 let idC = (linha[2] || "").trim().replace(/^"|"$/g, '');
+                let statusE = (linha[4] || "").trim().replace(/^"|"$/g, ''); // Coluna E (índice 4)
 
                 if (idC && !isNaN(idC)) {
                     if (!acumulador[idC]) {
@@ -208,18 +266,28 @@
                     if (conteudoB) {
                         acumulador[idC].push(conteudoB);
                     }
+                    // Verifica se a Coluna E contém "Conta"
+                    if (statusE.toLowerCase() === "conta") {
+                        statusConta[idC] = true;
+                    }
                 }
             });
 
-            // Atualiza os botões com tudo o que foi acumulado
             for (let i = 1; i <= 20; i++) {
                 let currentId = (100 + i).toString();
                 let display = document.getElementById(`res-${currentId}`);
+                let card = document.getElementById(`card-${currentId}`);
                 
+                // Aplica ou remove a classe de piscar
+                if (statusConta[currentId]) {
+                    card.classList.add('status-conta');
+                } else {
+                    card.classList.remove('status-conta');
+                }
+
                 if (acumulador[currentId] && acumulador[currentId].length > 0) {
-                    // Junta todos os pedidos encontrados para aquele ID com uma linha divisória
                     display.innerText = acumulador[currentId].join('\n---\n');
-                    display.style.color = "#00f3ff"; // Cor vibrante se houver dado
+                    display.style.color = "#00f3ff";
                 } else {
                     display.innerText = "Livre / Sem Dados";
                     display.style.color = "rgba(255,255,255,0.3)";
@@ -233,7 +301,31 @@
 
     function abrirModal(numero, id) {
         const textoCompleto = document.getElementById(`res-${id}`).innerText;
-        document.getElementById('modal-title').innerText = `MESA ${numero}`;
+        
+        let total = 0;
+        // Divide o texto em linhas para processar cada item individualmente
+        const linhas = textoCompleto.split('\n');
+        
+        linhas.forEach(linha => {
+            if (linha.trim() === "" || linha.trim() === "---") return;
+
+            // 1. Pega a quantidade (procura número antes de 'x')
+            let qtd = 1;
+            const matchQtd = linha.match(/^(\d+)x/);
+            if (matchQtd) qtd = parseInt(matchQtd[1]);
+
+            // 2. Pega o valor dentro de () limpando "R$" e espaços
+            const matchValor = linha.match(/\((?:R\$\s*)?([\d.,]+)\)/i);
+            if (matchValor) {
+                let valorTexto = matchValor[1].replace(',', '.');
+                let valorUnitario = parseFloat(valorTexto);
+                if (!isNaN(valorUnitario)) {
+                    total += (qtd * valorUnitario);
+                }
+            }
+        });
+
+        document.getElementById('modal-title').innerText = `MESA ${numero} - TOTAL: R$ ${total.toFixed(2)}`;
         document.getElementById('display-pedidos').innerText = textoCompleto;
         document.getElementById('modal').style.display = 'flex';
     }
@@ -242,7 +334,6 @@
         document.getElementById('modal').style.display = 'none';
     }
 
-    // Parser CSV que lida com aspas e vírgulas internas
     function parseCSV(str) {
         let arr = [];
         let quote = false;
@@ -263,7 +354,7 @@
     }
 
     sincronizarDados();
-    setInterval(sincronizarDados, 10000); // Atualiza a cada 10 segundos
+    setInterval(sincronizarDados, 10000);
 </script>
 
 </body>
