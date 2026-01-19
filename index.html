@@ -1,361 +1,1952 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface de Comando - Nuance</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="imgs/Favicon.jpg" type="image/x-con">
+	<title>NUANCE - Cardápio Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root {
-            --bg-dark: #05050a;
-            --neon-blue: #00f3ff;
-            --neon-purple: #bc13fe;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border-glass: rgba(0, 243, 255, 0.2);
-            --font-main: 'Inter', sans-serif;
-            --font-tech: 'Orbitron', sans-serif;
-            --alert-red: #ff003c;
-        }
+        :root { --primary: #FFD700; 
+                --dark: #1a1a1a; 
+                --verde: #5AAD58;
+                --light: #fff;
+                --gray: #f8f9fa;
+                --danger: #ff4d4d;
+                --success: #27ae60; 
+                --Laranja: #F54927;
+			    --verde-perfil: #00F241;
+                --shadow: 0 4px 15px rgba(0,0,0,0.1);
+			    --nuance-gold1: #d4af37; /*Cor rodapé*/
+                --vibrant-glow1: #ff007f; /* Cor que mudará via JS Rodapé*/
+			  }
+                
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+.logo-container45 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center; /* Centraliza no rodapé */
+    margin-top: 20px;
+    cursor: pointer; /* Criatividade: indica que é clicável */
+    text-decoration: none; /* Remove sublinhado do link */
+}
 
-        body {
-            background-color: var(--bg-dark);
-            color: #e0e0e0;
-            font-family: var(--font-main);
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.08) 0%, transparent 30%);
-        }
+#insta-icon {
+    opacity: 0;
+    transform: translateX(100px) rotate(0deg); /* Começa na direita sem girar */
+    transition: transform 1.5s ease-out, opacity 1s ease-out;
+}
 
-        header { padding: 50px 20px; text-align: center; }
-        header h1 {
-            font-family: var(--font-tech);
-            font-size: 2.2rem;
-            letter-spacing: 5px;
-            color: var(--neon-blue);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-            text-transform: uppercase;
-        }
+#brand-name {
+    color: black; /* Ajustado para preto pois o fundo do mini-rodape é branco */
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
+/* Classe que será adicionada pelo JS para iniciar a animação */
+.start-animation {
+    opacity: 1 !important;
+    transform: translateX(0) rotate(-360deg) !important; /* Rola para a esquerda */
+}
 
-        .mesa-card {
-            background: var(--glass);
-            border: 1px solid var(--border-glass);
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-            position: relative;
-            min-height: 200px;
-        }
-
-        /* ANIMAÇÃO DE PISCAR VERMELHO */
-        @keyframes pulse-red {
-            0% { border-color: var(--border-glass); box-shadow: 0 0 5px transparent; }
-            50% { border-color: var(--alert-red); box-shadow: 0 0 20px var(--alert-red); background: rgba(255, 0, 60, 0.1); }
-            100% { border-color: var(--border-glass); box-shadow: 0 0 5px transparent; }
-        }
-
-        .status-conta {
-            animation: pulse-red 1.5s infinite;
-            border-width: 2px !important;
-        }
-
-        .mesa-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-        }
-
-        .mesa-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-            padding-bottom: 10px;
-        }
-
-        .mesa-card i { font-size: 1.2rem; color: var(--neon-purple); }
-        .mesa-card span { font-family: var(--font-tech); font-size: 0.9rem; font-weight: bold; }
+    
+    
+         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--gray); color: var(--dark); padding-top: 70px; }
         
-        .resultado-b {
-            font-size: 0.85rem;
-            color: #fff;
-            line-height: 1.4;
-            overflow-y: auto;
-            max-height: 100px;
-            margin-bottom: 10px;
-            white-space: pre-wrap;
+        /* CABEÇALHO DA IMAGEM */
+        header { 
+            position: relative; 
+            height: 250px; 
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqbGX3sgziiqs-2IZgbXwe16HgImo4ztWdcVkG9OqxJQ&s=10') center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 60px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
         }
-
-        .id-label { 
-            font-size: 0.65rem; 
-            color: var(--neon-blue); 
-            opacity: 0.6; 
-            margin-top: auto;
-            font-family: var(--font-tech);
+        header h1 {
+            color: white;
+            font-size: 3em;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            z-index: 1;
+            margin: 0;
         }
-
-        .btn-ex {
-            margin-top: 10px;
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            font-family: var(--font-tech);
-            font-size: 0.7rem;
+        .profile-img-container {
+            position: absolute;
+            bottom: -50px;
+            background: white;
             padding: 5px;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.3s;
-            border-radius: 4px;
+            border-radius: 50%;
+            box-shadow: var(--shadow);
             z-index: 2;
         }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: contain; }
 
-        .btn-ex:hover {
-            background: var(--neon-blue);
-            color: var(--bg-dark);
-            box-shadow: 0 0 10px var(--neon-blue);
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; padding-bottom: 120px; text-align: center;}
+        
+        .store-info { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 1.1em; font-weight: 500;}
+        .status-badge { display: flex; align-items: center; gap: 8px; font-weight: bold; }
+        
+        /* ANIMAÇÃO PONTO VERDE */
+        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
+        .dot-open { 
+            background-color: var(--success); 
+            box-shadow: 0 0 0 rgba(39, 174, 96, 0.4);
+            animation: pulse-vibrate 1.5s infinite;
+        }
+        .dot-closed { background-color: var(--danger); }
+
+        @keyframes pulse-vibrate {
+            0% { transform: scale(0.95) translate(0, 0); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            10% { transform: scale(1) translate(-1px, 1px); }
+            20% { transform: scale(1) translate(1px, -1px); }
+            70% { transform: scale(1.1) translate(0, 0); box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { transform: scale(0.95) translate(0, 0); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
         }
 
-        .modal-fullscreen {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--bg-dark);
-            z-index: 9999;
-            padding: 30px;
-            flex-direction: column;
-            align-items: center;
-        }
+        .insta-link { color: #e1306c; text-decoration: none; font-weight: bold; }
 
-        .modal-content { width: 100%; max-width: 700px; }
+        /* RESTANTE DO ESTILO ORIGINAL */
+        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; margin-bottom: 20px; scrollbar-width: none; justify-content: center;}
+        .category-btn { padding: 10px 25px; border-radius: 25px; border: 1px solid #ddd; background: white; cursor: pointer; white-space: nowrap; font-weight: 600; }
+        .category-btn.active { background: var(--primary); border-color: var(--primary); }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-glass);
-            padding-bottom: 15px;
+        h2 { border-left: 5px solid var(--primary); padding-left: 10px; margin-top: 30px; text-align: left;}
+        
+        /* CARROSSEL */
+        .carousel-container { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 15px; 
+            padding: 10px 5px; 
+            scrollbar-width: none; 
+            cursor: grab;
+            user-select: none;
         }
+        .carousel-container:active { cursor: grabbing; }
+        .carousel-container::-webkit-scrollbar { display: none; }
 
-        .btn-close {
-            background: transparent;
-            border: 1px solid var(--neon-purple);
-            color: var(--neon-purple);
-            padding: 8px 16px;
-            font-family: var(--font-tech);
-            cursor: pointer;
-            text-transform: uppercase;
-        }
+        .product-card { background: white; min-width: 250px; border-radius: 15px; padding: 15px; box-shadow: var(--shadow); flex-shrink: 0; text-align: center; pointer-events: auto; transition: transform 0.3s;}
+        .product-card:hover { transform: translateY(-5px); } /* Criatividade: leve flutuação ao passar o mouse */
+        .product-card img { width: 200px; height: 180px; object-fit: cover; border-radius: 20px; pointer-events: none; }
+        .product-card h3 { color: var(--Laranja);}
+        
+        /* PREÇOS */
+        .price { color: var(--success); font-weight: bold; font-size: 1.2em; display: flex; justify-content: center; align-items: center; gap: 8px; margin: 10px 0; }
+        .old-price { color: #999; text-decoration: line-through; font-size: 0.8em; font-weight: normal; }
+        .badge-ml { background: #eee; color: #555; padding: 2px 6px; border-radius: 5px; font-size: 0.5em; text-transform: uppercase; vertical-align: middle; }
+        
+       
+        
+        .btn-main, .btn-add { background: var(--primary); border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.2s; position: relative; overflow: hidden; }
+        
+        /* Animação de sucesso no botão */
+        .btn-added-success { background-color: var(--success) !important; transform: scale(0.95); color: white; }
+        
+        .btn-flavor { background: var(--verde); color: var(--primary); }
+    
+    
+        /* MODAIS E CARRINHO */
+        #cart-modal, #checkout-modal, #payment-modal, #flavor-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); l-index: 1000; }
+        .modal-content { position: absolute; bottom: 0; background: white; width: 100%; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; }
+        
+        /* BOTÃO VOLTAR NOS MODAIS */
+        .modal-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .btn-back { background: none; border: none; font-size: 1.5em; cursor: pointer; color: var(--dark); }
 
-        .display-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--border-glass);
-            padding: 25px;
-            border-radius: 10px;
-            min-height: 200px;
-            color: var(--neon-blue);
-            font-size: 1.2rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-    </style>
+        .cart-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .cart-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .qty-controls { display: flex; align-items: center; gap: 10px; background: #eee; padding: 5px 10px; border-radius: 8px; }
+        .btn-remove { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.2em; padding: 5px; }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+        .flavor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .flavor-btn { padding: 15px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; cursor: pointer; }
+        
+        /* Alerta de erro para CPF */
+        .input-error { border-color: var(--danger) !important; background-color: #fff0f0; }
+
+        /* Estilos de Cupom e Avisos */
+        .coupon-area { margin: 15px 0; display: flex; gap: 10px; }
+        .coupon-area input { flex: 1; }
+        .btn-apply { background: var(--dark); color: white; border: none; border-radius: 8px; padding: 0 15px; cursor: pointer; }
+        .delivery-warning { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.9em; display: none; border: 1px solid #ffeeba; }
+    
+    /*=====================================================================
+/* 1. Estilo Básico do Botão Pegar CUPOM*/
+    
+  .papaiNoel {
+      font-size: 30px;
+  }  
+    
+    
+.wave-button {
+    text-decoration: none; /* Remove o sublinhado do link */
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff; /* Cor do texto */
+    background-color: #5b3d92; /* Cor de fundo (roxo/lilás) */
+    border: 2px solid #5b3d92;
+    border-radius: 8px;
+    overflow: hidden; 
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap; 
+}
+
+/* Efeito hover básico (opcional) */
+.wave-button:hover {
+    background-color: #432c6a;
+}
+
+/* 2. Estilo e Posição das Letras (os <span>) */
+.wave-button .letter {
+    display: inline-block;
+    position: relative;
+    transform-origin: bottom; 
+    /* Aplica a animação: 1.5s de duração, rodando infinitamente, com suavidade na velocidade (ease-in-out) */
+    animation: wave 1.5s infinite ease-in-out; 
+}
+
+/* 3. Ajuste de Atraso para a Animação de Onda */
+.wave-button .letter:nth-child(1) { animation-delay: 0.0s; } /* P */
+.wave-button .letter:nth-child(2) { animation-delay: 0.1s; } /* E */
+.wave-button .letter:nth-child(3) { animation-delay: 0.2s; } /* G */
+.wave-button .letter:nth-child(4) { animation-delay: 0.3s; } /* A */
+.wave-button .letter:nth-child(5) { animation-delay: 0.4s; } /* R */
+.wave-button .letter:nth-child(6) { animation-delay: 0.5s; } /* ESPAÇO */
+.wave-button .letter:nth-child(7) { animation-delay: 0.6s; } /* C */
+.wave-button .letter:nth-child(8) { animation-delay: 0.7s; } /* U */
+.wave-button .letter:nth-child(9) { animation-delay: 0.8s; } /* P */
+.wave-button .letter:nth-child(10) { animation-delay: 0.9s; } /* O */
+.wave-button .letter:nth-child(11) { animation-delay: 1.0s; } /* M */
+.wave-button .letter:nth-child(12) { animation-delay: 1.1s; } /* M */
+
+
+/* 4. Definição da Animação (Keyframes) */
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg); /* Estado inicial e final */
+        color: #fff;
+    }
+    50% {
+        transform: translateY(-8px) rotate(-2deg); /* No meio, a letra sobe 8px e inclina 2 graus */
+        color: #ffcc00; /* Cor de destaque no pico da onda (opcional) */
+        filter: brightness(1.2);
+    }
+}
+
+/* --- ESTILOS ADICIONADOS PARA A BARRA FIXA E CARRINHO --- */
+.top-bar-branding {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1001;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.h3-pegar-cupom {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+    flex: 1;
+}
+
+.cart-top-trigger {
+    position: relative;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.cart-top-trigger i {
+    font-size: 24px;
+    color: var(--dark);
+}
+
+.cart-badge-dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--danger);
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: none;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*=====================================================================*/  
+/*------Mensagens de Atenção------------*/
+
+/* Estilo Base da Caixa de Atenção */
+#atencao-box {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 5px 10px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: none; 
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 300px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+/* Estilo do Cabeçalho "Atenção!" - USA FLEXBOX AGORA */
+.atencao-header {
+    display: flex;
+    align-items: center; 
+    font-size: 1em;
+    font-weight: bold;
+    color: #eb5757; 
+    margin-bottom: 5px;
+}
+
+/* Estilo para o Checkmark Verde - REMOVIDO POSITION: ABSOLUTE */
+.atencao-checkmark {
+    width: 20px; 
+    height: 20px;
+    margin-right: 5px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.atencao-checkmark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Estilo do Texto "Atenção!" */
+.atencao-icon {
+    color: #eb5757; 
+}
+
+/* Estilo do Conteúdo da Mensagem */
+.atencao-body {
+    font-size: 9px;
+    color: #333;
+    line-height: 1.4;
+    margin-top: 5px;
+    padding-left: 25px; 
+}
+
+.atencao-body strong {
+    color: #000;
+    font-weight: 700;
+}
+    
+        
+/*🚨🚨🚨 RODAPÉ 🚨🚨*/        
+.mini-rodape {
+    background: white;
+    color: Black;
+    padding: 20px 15px;
+    font-family: sans-serif;
+    border-top: 1px solid #333;
+}
+
+.mini-grid {
+    display: flex;
+    flex-direction: column; /* No celular fica um sobre o outro */
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.logo-mini {
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.logo-mini .dot { color: #00d4ff; }
+
+.links-mini {
+    display: flex;
+    gap: 15px;
+}
+
+.links-mini a {
+    color: black;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.links-mini a:active { color: #00d4ff; } /* Efeito de toque */
+
+.social-mini {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-social {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #333;
+}
+
+.barra-final {
+    text-align: center;
+    border-top: 1px solid #222;
+    padding-top: 10px;
+    font-size: 10px;
+    color: #555;
+}
+
+.magic {
+    display: inline-block;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+
+/* 🚨🚨Estilos dos perfis do Rodapé🚨🚨 */
+.profiles-container {
+    display: flex;
+    gap: 20px; /* Reduzido para caber melhor no layout */
+    padding: 20px;
+    background: black; 
+    justify-content: center;
+    flex-wrap: wrap; /* Para não quebrar no celular */
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+.barman-item-interactive {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 190px; /*deixa os perfis no centro*/
+    height: 160px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: visible;
+}
+
+.barman-item-interactive.active {
+    width: 350px; /*perfil se arrasta pra esquerda*/
+}
+
+/* Círculo com Luz Vibrante por trás */
+.glow-circle-interactive {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+.glow-circle-interactive::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--vibrant-glow1); /* Usando sua variável do root */
+    filter: blur(15px);
+    z-index: -1;
+    animation: pulse-glow-int 2.5s infinite;
+}
+
+@keyframes pulse-glow-int {
+    0%, 100% { transform: scale(0.8); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.barman-photo-interactive {
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%;
+    object-fit: cover; 
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Modal Lateral */
+.side-modal-interactive {
+    position: absolute;
+    left: 120px; /*Afasta o Modal do perfis*/
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-20px);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 10px 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.4s ease;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.barman-item-interactive.active .side-modal-interactive {
+    opacity: 1; 
+    visibility: visible; 
+    transform: translateX(0);
+}
+
+.modal-title-int { color: var(--nuance-gold1); font-size: 0.8rem; font-weight: bold; }
+
+.btn-action-int {
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 5px;
+    font-size: 0.7rem; 
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-gold-int { background: var(--nuance-gold1); color: #000; }
+.btn-outline-int { background: transparent; color: white; border: 1px solid #C2A32F; }
+
+.name-label-interactive {
+    position: absolute;
+    background: var(--nuance-gold1);
+    padding: 5px;
+    border-radius: 15px;
+    bottom: 5px;
+    width: 80px; /*Nome dos baremen Direita e esquerda*/
+    text-align: center; 
+    font-size: 0.6rem; 
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+}
+/*🚨🚨Os perfis do rodapé ☝️🚨🚨*/
+		
+.barmans-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+.barman-item {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.img-albatroz {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--verde-perfil);
+}
+
+/* No computador, ele fica em uma linha só */
+@media (min-width: 768px) {
+    .mini-grid {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+
+/* --- NOVA ANIMAÇÃO DO JOINHA --- */
+.thumb-animation {
+    position: fixed;
+    font-size: 24px;
+    z-index: 9999;
+    pointer-events: none;
+    /* Alterado para 1.5s para ser mais devagar */
+    transition: all 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+   </style>
 </head>
 <body>
 
-<header>
-    <h1>Nuance Terminal</h1>
-    <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6;">SCANNER DE SISTEMA COMPLETO</p>
-</header>
+<div class="top-bar-branding">
+    <h3 class="h3-pegar-cupom"><span class="papaiNoel">🌲🎅</span> Pegue seu <strong>CUPOM</strong></h3>
+    
+    <div style="display: flex; align-items: center;">
+        <a href="Cliente-Nuance.html" class="wave-button" style="padding: 8px 15px; font-size: 12px;">
+            <span class="letter">P</span>
+            <span class="letter">E</span>
+            <span class="letter">G</span>
+            <span class="letter">A</span>
+            <span class="letter">R</span>
+        </a>
 
-<div class="container" id="grid-mesas"></div>
-
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-
-<div id="modal" class="modal-fullscreen">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modal-title" style="font-family: var(--font-tech);">MESA</h2>
-            <button class="btn-close" onclick="fecharModal()">Fechar</button>
+        <div id="cart-anchor" class="cart-top-trigger" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <div id="cart-dot" class="cart-badge-dot"></div>
         </div>
-        <div id="display-pedidos" class="display-box"></div>
     </div>
 </div>
 
-<script>
-    const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAb5Ou99MR6hD2_t7XPdZRzYBf-4ZE7HkqfSZ7PwU0POKTHfs6232ezYPT3yYzbKLzAX3Muwp4BxPo/pub?output=csv';
-    const grid = document.getElementById('grid-mesas');
+<header>
+    <div class="profile-img-container">
+        <img src="imgs/Logo-principal.jpg" alt="Logo" class="profile-img">
+    </div>
+</header>
 
-    // Função para enviar os dados ao Google Form
-    function enviarEX(idMesa) {
-        const prefixoID = `EX${idMesa}`;
-        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdqJeSChWOP4EhrJZO3T2HERuGgU9Tjax7GVM-pTH0MBpVXGw/formResponse";
-        
-        // Criar formulário temporário para submissão no iframe oculto
-        const tempForm = document.createElement("form");
-        tempForm.action = formURL;
-        tempForm.method = "POST";
-        tempForm.target = "hidden_iframe";
+<div class="container">
+    <div class="store-info">
+        <span><i class="fas fa-map-marker-alt"></i> Nossa localização - Anápolis</span>
+        <div id="store-status" class="status-badge"></div>
+        <a href="https://www.instagram.com/nuance_drinks?igsh=MXEwcDh1Y3FpenozNw==" target="_blank" class="insta-link"><i class="fab fa-instagram"></i> @nuance_drinks</a>
+    </div>
+    
+    <hr>
+    <div class="categories">
+        <button class="category-btn active" onclick="filterCategory('all')">Todos</button>
+        <button class="category-btn" onclick="filterCategory('alcool')">Drinks com Álcool</button>
+        <button class="category-btn" onclick="filterCategory('sem-alcool')">Sem Álcool</button>
+    </div>
+        <div class="categories">
+        <button class="category-btn" onclick="filterCategory('copao')">Copão</button>
+        <button class="category-btn" onclick="filterCategory('combo')">Combos</button>
+    </div>
 
-        const input = document.createElement("input");
-        input.name = "entry.1646513792";
-        input.value = prefixoID;
-        
-        tempForm.appendChild(input);
-        document.body.appendChild(tempForm);
-        tempForm.submit();
-        document.body.removeChild(tempForm);
-
-        alert(`Enviado: ${prefixoID}`);
-    }
-
-    for (let i = 1; i <= 20; i++) {
-        let idMesa = 100 + i;
-        let div = document.createElement('div');
-        div.className = 'mesa-card';
-        div.id = `card-${idMesa}`;
-        div.innerHTML = `
-            <div class="mesa-header">
-                <span>MESA ${i}</span>
-                <i class="fas fa-microchip"></i>
+    <div id="menu-sections">
+        <div class="menu-section" data-category="alcool">
+            <h2>Drinks com Álcool</h2>
+                
+            <div class="carousel-container drag-scroll">
+                    
+                <div class="product-card" data-id="1">
+                    <img src="img-produtos/Drinks-c-alcool/caipifrutas.jpg">
+                    <h3>CaipFrutas</h3>
+                        <span class="old-price">R$ 12.00</span> 
+                        <span class="price">R$ 10.00 
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('CaipFrutas', 10.00, ['🍋‍🟩 Limão 🍋‍🟩', '🍓 Morango 🍓', '🥂 Maracujá 🥂', '🥭 Manga 🥭'], 'img-produtos/Drinks-c-alcool/caipifrutas.jpg')">Escolher Sabor</button>
+				</div>
+                    
+                <div class="product-card" data-id="2">
+                    <img src="img-produtos/Drinks-c-alcool/Caipigins.jpg">
+                    <h3>GIN's</h3>
+                        <span class="old-price">R$ 22.99</span> 
+                        <span class="price">R$ 20.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('GIN`s', 20.00, ['Gin Tropical', 'Gin Tônica', 'Gin Red-Fruts'], 'img-produtos/Drinks-c-alcool/Caipigins.jpg')">Escolher Fruta</button>
+                </div>
+                    
+                <div class="product-card" data-id="3">
+                    <img src="img-produtos/Drinks-c-alcool/Mojitos.jpg">
+                    <h3>Mojito</h3>
+                        <span class="old-price">R$ 16.99</span> 
+                        <span class="price">R$ 15.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Mojito', 15.00, ['🍋‍🟩 Limão 🍋‍🟩', '🍓 Morango 🍓', '🥂 Maracujá 🥂', '🥭 Manga 🥭'], 'img-produtos/Drinks-c-alcool/Mojitos.jpg')">Escolher Sabor</button>
+                </div>
+                    
+                <div class="product-card" data-id="4">
+                    <img src="img-produtos/Drinks-c-alcool/Moscow-mule.jpg">
+                    <h3>Moscow Mule</h3>
+                        <span class="old-price">R$ 22.99</span> 
+                        <span class="price">R$ 20.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Moscow Mule', 20.00, 'img-produtos/Drinks-c-alcool/Moscow-mule.jpg')">Adicionar</button>
+                </div>
+              
+                <div class="product-card" data-id="5">
+                    <img src="img-produtos/Drinks-c-alcool/Jack-limoned.jpg">
+                    <h3>Jack Limoned</h3>
+                        <span class="old-price">R$ 27.99</span> 
+                        <span class="price">R$ 25.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Jack Limoned', 25.00, 'img-produtos/Drinks-c-alcool/Jack-limoned.jpg')">Adicionar</button>
+                </div>
+                
+                <div class="product-card" data-id="6">
+                    <img src="img-produtos/Drinks-c-alcool/Joge-amado.jpeg">
+                    <h3>Joge Amado</h3>
+                        <span class="old-price">R$ 19.99</span> 
+                        <span class="price">R$ 18.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Joge Amado', 18.00, 'img-produtos/Drinks-c-alcool/Joge-amado.jpeg')">Adicionar</button>
+                </div>
+                    
+                <div class="product-card" data-id="7">
+                    <img src="img-produtos/Drinks-c-alcool/Pina-colada.jpg">
+                    <h3>Pina Colada</h3>
+                        <span class="old-price">R$ 21.99</span> 
+                        <span class="price">R$ 20.00
+                        <span class="badge-ml">350ml</span>
+                        </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Pina Colada', 20.00, 'img-produtos/Drinks-c-alcool/Pina-colada.jpg')">Adicionar</button>
+                </div>
+                
+                
             </div>
-            <div class="resultado-b" id="res-${idMesa}">Sincronizando...</div>
-            <button class="btn-ex" onclick="event.stopPropagation(); enviarEX(${idMesa})">EX${idMesa}</button>
-            <div class="id-label">LOG ID: ${idMesa}</div>
-        `;
-        div.onclick = () => abrirModal(i, idMesa);
-        grid.appendChild(div);
+        </div>
+            
+<div class="menu-section" data-category="sem-alcool">
+            <h2>Drinks sem Álcool</h2>
+                
+            <div class="carousel-container drag-scroll">
+                    
+                <div class="product-card" data-id="200">
+                    <img src="img-produtos/Drinks-s-alcool/Soda-Italiana.jpeg">
+                    <h3>Soda Italiana</h3>
+                     <span class="old-price">R$ 8,00</span> 
+                     <span class="price">R$ 8,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Soda Italiana', 8.00, ['🍋‍🟩 Limão Siciliano 🍋‍🟩', '🍎🍓 Red Frits 🍓🍎', '🥂 Maracujá 🥂', '🍏 Maçan Vrede 🍏', '🍍 Abacaxi 🍍'], 'img-produtos/Drinks-s-alcool/Soda-Italiana.jpeg')">Escolher Sabor</button>
+                </div>
+                    
+                <div class="product-card" data-id="201">
+                    <img src="img-produtos/Drinks-s-alcool/Mongorango.jpeg">
+                    <h3>Mongorango</h3>
+                     <span class="old-price">R$ 9,99</span> 
+                     <span class="price">R$ 8,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Mongorango', 8.00, 'img-produtos/Drinks-s-alcool/Mongorango.jpeg')">Adicionar</button>
+                </div>
+                   
+                <div class="product-card"  data-id="202">
+                    <img src="img-produtos/Drinks-s-alcool/Abacixi-Hortelã.jpeg">
+                    <h3>Abacaxi Hortelã</h3>
+                     <span class="old-price">R$ 7,99</span> 
+                     <span class="price">R$ 6,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Abacaxi Hortelã', 6.00, 'img-produtos/Drinks-s-alcool/Abacixi-Hortelã.jpeg')">Adicionar</button>
+                </div>
+                    
+                <div class="product-card" data-id="203">
+                    <img src="img-produtos/Drinks-s-alcool/Cha-tropical.jpeg">
+                    <h3>Chá Tropical</h3>
+                     <span class="old-price">R$ 11,99</span> 
+                     <span class="price">R$ 10,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Chá Tropical', 10.00, 'img-produtos/Drinks-s-alcool/Cha-tropical.jpeg')">Adicionar</button>
+                </div>
+                    
+                <div class="product-card" data-id="204">
+                    <img src="img-produtos/Drinks-s-alcool/Grape-Fresh.jpeg">
+                    <h3>Grape Fresh</h3>
+                     <span class="old-price">R$ 7,99</span> 
+                     <span class="price">R$ 6,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Grape Fresh', 6.00, 'img-produtos/Drinks-s-alcool/Grape-Fresh.jpeg')">Adicionar</button>
+                </div>
+                    
+                <div class="product-card" data-id="205">
+                    <img src="img-produtos/Drinks-s-alcool/Hibisco-Spritz.jpeg">
+                    <h3>Hibisco Spritz</h3>
+                     <span class="old-price">R$ 12,99</span> 
+                     <span class="price">R$ 10,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Hibisco Spritz', 10.00, 'img-produtos/Drinks-s-alcool/Hibisco-Spritz.jpeg')">Adicionar</button>
+                </div>
+                   
+                <div class="product-card" data-id="206">
+                    <img src="img-produtos/Drinks-s-alcool/Mocktail.jpeg">
+                    <h3>Mocktail</h3>
+                     <span class="old-price">R$ 19,99</span> 
+                     <span class="price">R$ 18,00
+                     <span class="badge-ml">350ml</span>
+                     </span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Mocktail', 18.00, 'img-produtos/Drinks-s-alcool/Mocktail.jpeg')">Adicionar</button>
+                </div>
+            </div>
+        </div>
+<div class="menu-section" data-category="copao">
+            <h2>Copão</h2>
+                
+    <div style="text-align:center; margin: 20px 0;">
+    <h3 class="h3-pegar-cupom" style="display:block; width:100%; margin-bottom:10px">Faça seu <strong>COPÃO</strong><br>👇 Cliqui Aqui 👇</h3>
+    <a href="Fazer-Copao.html" class="wave-button">
+    <span class="letter">F</span>
+    <span class="letter">A</span>
+    <span class="letter">Z</span>
+    <span class="letter">E</span>
+    <span class="letter">R</span>
+    <span class="letter">&nbsp;</span>
+    <span class="letter">C</span>
+    <span class="letter">O</span>
+    <span class="letter">P</span>
+    <span class="letter">Ã</span>
+    <span class="letter">O</span>
+    </a>
+    </div>  
+                
+                
+                
+            <div class="carousel-container drag-scroll">
+                    
+                <div class="product-card" data-id="300">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300">
+                    <h3>Pitu + RedBull + Gelo</h3>
+                    <span class="old-price">R$ 29,99</span> 
+                    <span class="price">R$ 27,00
+                    <span class="badge-ml">700ml</span>
+                    </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Pitu com Red Bull e Gelo sabor ', 27.00, ['Red Label', 'Jack Daniels', 'Ballantines', 'Passport'], 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300')">Escolher sabor do Gelo</button>
+                </div>
+                    
+                <div class="product-card" data-id="301">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300">
+                    <h3>Vodka + RedBull + Gelo</h3>
+                    <span class="old-price">R$ 29,99</span> 
+                    <span class="price">R$ 27,00
+                    <span class="badge-ml">700ml</span>
+                    </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Pitu com Red Bull e Gelo sabor ', 27.00, ['Red Label', 'Jack Daniels', 'Ballantines', 'Passport'], 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300')">Escolher sabor do Gelo</button>
+                </div>
+                
+                <div class="product-card" data-id="302">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300">
+                    <h3>51 + RedBull + Gelo</h3>
+                    <span class="old-price">R$ 29,99</span> 
+                    <span class="price">R$ 27,00
+                    <span class="badge-ml">700ml</span>
+                    </span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Pitu com Red Bull e Gelo sabor ', 27.00, ['Red Label', 'Jack Daniels', 'Ballantines', 'Passport'], 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300')">Escolher sabor do Gelo</button>
+                </div>
+                    
+                
+            </div>
+        </div>
+
+        <div class="menu-section" data-category="combo">
+            <h2>Combos</h2>
+            <div class="carousel-container drag-scroll">
+                <div class="product-card" data-id="400">
+                    <img src="https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300">
+                    <h3>Combo Destilado</h3><span class="price">R$ 100.00</span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Combo Destilado', 100.00, ['Vodka + 4 Energ', 'Gin + 4 Tonic', 'Whisky + 4 Energ', 'Vinho + Suco'], 'https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300')">Escolher Combo</button>
+                </div>
+                <div class="product-card" data-id="401">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300">
+                    <h3>Combo Casal</h3><span class="price">R$ 50.00</span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Combo Casal', 50.00, ['2 Gins', '2 Caipirinhas', '2 Mojitos', '2 Sodas'], 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300')">Escolher Bebidas</button>
+                </div>
+                <div class="product-card" data-id="402">
+                    <img src="https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300">
+                    <h3>Combo Balde</h3><span class="price">R$ 80.00</span>
+                    <button class="btn-add btn-flavor" onclick="openFlavorModal('Combo Balde', 80.00, ['6 Long Necks', '5 Cervejas + Porção', '4 Drinks VIP', '10 Shots'], 'https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300')">Escolher Itens</button>
+                </div>
+                <div class="product-card" data-id="403">
+                    <img src="https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300">
+                    <h3>Combo Amigos Fixo</h3><span class="price">R$ 100.00</span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Combo Amigos Fixo', 100.00, 'https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300')">Adicionar</button>
+                </div>
+                <div class="product-card" data-id="404">
+                    <img src="https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300">
+                    <h3>Combo Shot Galera</h3><span class="price">R$ 45.00</span>
+                    <button class="btn-add" onclick="animateAdd(this); addToCart('Combo Shot Galera', 45.00, 'https://images.unsplash.com/photo-1597075095400-b2489955d49f?w=300')">Adicionar</button>
+               
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+
+<div id="flavor-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="btn-back" onclick="closeModal('flavor-modal')"><i class="fas fa-arrow-left"></i></button>
+            <h3 id="flavor-title" style="margin:0"></h3>
+        </div>
+        <div id="flavor-options" class="flavor-grid"></div>
+        <button class="btn-main" style="background:#999; margin-top:15px" onclick="closeModal('flavor-modal')">Cancelar</button>
+    </div>
+</div>
+
+<div id="cart-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="btn-back" onclick="toggleCart()"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0">Carrinho</h2>
+        </div>
+        <div id="cart-items-list"></div>
+        
+        <div class="coupon-area">
+            <input type="text" id="coupon-input" placeholder="Tem um cupom?">
+            <button class="btn-apply" onclick="applyCoupon()">Aplicar</button>
+        </div>
+        <div id="coupon-msg" style="font-size: 0.8em; margin-bottom: 10px; text-align: left;"></div>
+
+        <div style="margin-top:20px; font-weight:bold; font-size:1.2em">Total: R$ <span id="modal-total">0.00</span></div>
+        <button class="btn-main" onclick="openCheckout()" style="margin-top:15px">Finalizar Compra</button>
+        <button class="btn-main" style="background:#999; margin-top:10px" onclick="toggleCart()">Continuar Comprando</button>
+    <br><br><br><br><br>
+	</div>
+</div>
+
+<div id="checkout-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="btn-back" onclick="closeCheckout()"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0">Checkout</h2>
+        </div>
+        <div class="form-group">
+            <label>Como deseja receber?</label>
+            <select id="delivery-type" onchange="toggleFields()">
+                <option value="delivery">Delivery em Casa</option>
+            </select>
+            <div id="delivery-warning" class="delivery-warning" style="display: block;">
+                <i class="fas fa-exclamation-triangle"></i> Atenção: Pedidos para delivery possuem um acréscimo de R$ 10,00 na taxa de entrega.
+				<br>
+				<span style="color: red;">Usou o Cupom?😍 Descunsidere esse aviso</span>
+            </div>
+        </div>
+        <div id="fields-delivery" style="display:block">
+            <div class="form-group"><label>Nome*</label><input type="text" id="dev-nome"></div>
+            <div class="form-group"><label>WhatsApp*</label><input type="text" id="dev-contato"></div>
+            <div class="form-group"><label>CEP*</label><input type="text" id="dev-CEP" oninput="mascaraCEP(this)" maxlength="9" placeholder="00000-000"></div>
+            <div class="form-group"><label>Bairro*</label><input type="text" id="dev-bairro"></div>
+            <div class="form-group"><label>Rua*</label><input type="text" id="dev-rua"></div>
+            <div class="form-group"><label>Nº/Lote*</label><input type="text" id="dev-num"></div>
+            <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp" placeholder="Apt, bloco, ponto de ref..."></div>
+        </div>
+        <button class="btn-main" onclick="sendWhatsApp()">Confirmar e Pagar</button>
+   <br><br><br><br><br>
+	</div>
+</div>
+
+<div id="payment-modal">
+       <div class="modal-content" style="text-align: center;">
+           
+        <i class="fas fa-shield-alt" style="font-size: 4em; color: var(--success); margin-bottom: 15px;"></i>
+        <h2 style="margin:0 0 10px 0;">
+        <button class="btn-back" onclick="closePayment()"><i class="fas fa-arrow-left"></i></button>
+            Finalizar Pagamento</h2>
+		<p style="color: #666; font-size: 0.9em;">Seu pedido já foi enviado para nossa cozinha!<br>Agora, realize o pagamento para finalizar.</p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 20px 0;">
+            <span style="font-size: 0.9em; color: #777;">Valor Total:</span><br>
+            <strong style="font-size: 2em; color: var(--success);">R$ <span id="pay-total">0.00</span></strong>
+        </div>
+
+        <a id="pay-link" href="#" target="_blank" class="btn-main" style="display: block; text-decoration: none; background: #009ee3; margin-bottom: 10px;">
+            Pagar Agora <i class="fas fa-lock"></i>
+        </a>
+
+        <button class="btn-main" onclick="finalizarWhatsApp()" style="background: #25D366;">
+            Finalizar Compra / WhatsApp <i class="fab fa-whatsapp"></i>
+        </button>
+		   <br><br><br><br><br>
+    </div>
+</div>
+
+        
+        
+        
+      <div id="atencao-box">
+    <div class="atencao-header">
+        <div class="atencao-checkmark">
+            <svg viewBox="0 0 52 52">
+                <circle cx="26" cy="26" r="25" fill="#4CAF50"/>
+                <path stroke="#fff" stroke-width="5" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        <span class="atencao-icon">⚠️ Atenção!</span>
+        </div>
+   <div id="mensagem-conteudo" class="atencao-body"></div>
+  </div>
+
+<footer class="mini-rodape">
+       <h1 style="
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 3.5rem;
+    text-align: center;
+    margin: 10px auto;
+    padding: 15px 40px;
+    color: #fff;
+    display: table;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    /* Moldura de linhas duplas */
+    border-top: 4px double #D4AF37;
+    border-bottom: 4px double #D4AF37;
+    /* Efeito de sobreposição de cores no texto */
+    text-shadow: 
+        2px 2px 0px #D4AF37, 
+        4px 4px 0px rgba(0,0,0,1), 
+        6px 6px 15px rgba(212, 175, 55, 0.5);
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+">
+    NUANCE
+</h1>
+        <p style="text-align: center;">👇 Para mais informações 👇</p>
+
+        
+    <div class="profiles-container">
+        <div class="barman-item-interactive" onclick="handleInteractiveProfile(this)">
+            <div class="glow-circle-interactive">
+                <img src="imgs/Perfil.Darwin.jpg" class="barman-photo-interactive">
+            </div>
+            <div class="side-modal-interactive">
+                <span class="modal-title-int">BARMAN DARWIN</span>
+                <a href="Zap-Bot.html" target="_blank"><button class="btn-action-int btn-gold-int">WhatsApp Bot</button></a>
+                <a href="https://wa.me/5562994476497?text=Ol%C3%A1!%20Eu%20falo%20com%20o%20Barman%20Darwin%3F" target="_blank"><button class="btn-action-int btn-outline-int">WhatsApp</button></a>
+            </div>
+            <div class="name-label-interactive">Darwin</div>
+        </div>
+
+        <div class="barman-item-interactive" onclick="handleInteractiveProfile(this)">
+            <div class="glow-circle-interactive">
+                <img src="imgs/Perfil.Douglas.png" class="barman-photo-interactive">
+            </div>
+            <div class="side-modal-interactive">
+                <span class="modal-title-int">BARMAN DOUGLAS</span>
+                <a href="Zap-Bot.html" target="_blank"><button class="btn-action-int btn-gold-int" onclick="alert('Especialidade: Moscow Mule!')">WhatsApp Bot</button></a>
+                <a href="https://wa.me/556283392844?text=Ol%C3%A1!%20Eu%20falo%20com%20o%20Barman%20Darwin%3F" target="_blank"><button class="btn-action-int btn-outline-int">WhatsApp</button></a>
+            </div>
+            <div class="name-label-interactive">Douglas</div>
+        </div>
+    </div>
+
+
+    <a href="https://www.instagram.com/nuance_drinks?igsh=MXEwcDh1Y3FpenozNw==" target="_blank" class="logo-container45">
+        <svg id="insta-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="insta-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f09433"/>
+                    <stop offset="25%" stop-color="#e6683c"/>
+                    <stop offset="50%" stop-color="#dc2743"/>
+                    <stop offset="75%" stop-color="#cc2366"/>
+                    <stop offset="100%" stop-color="#bc1888"/>
+                </linearGradient>
+            </defs>
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.355 2.618 6.778 6.98 6.978 1.28.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="url(#insta-gradient)"/>
+        </svg>
+        <h1 id="brand-name"></h1>
+    </a>
+        <button onclick="abrirModalDireitos()" style="
+    background: rgba(212, 175, 55, 0.05);
+    color: #D4AF37;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 8px 24px 8px 12px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 30px auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+">
+    <div style="
+        background: #D4AF37;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    ">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+    </div>
+
+    <div style="text-align: left;">
+        <span style="display: block; font-weight: 900; font-size: 0.75rem;">Criador do Site</span>
+        <span style="display: block; font-size: 0.55rem; opacity: 0.8;">Cliquei Aqui Para</span>
+        <span style="display: block; font-size: 0.55rem; opacity: 0.8;">Informaçõesa</span>
+		
+	</div>
+</button>
+
+<div id="modalDireitos" style="
+    display: none; 
+    position: fixed; 
+    z-index: 10000; 
+    left: 0; top: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(8px);
+">
+    <div style="
+        background: #111; 
+        border: 1px solid #D4AF37; 
+        color: white; 
+        margin: 15% auto; 
+        padding: 30px; 
+        width: 80%; 
+        max-width: 450px; 
+        border-radius: 15px; 
+        text-align: center; 
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        font-family: 'Segoe UI', sans-serif;
+    ">
+        <h3 style="color: #D4AF37; margin-top: 0; letter-spacing: 2px;">DIREITOS AUTORAIS</h3>
+        <div style="height: 1px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 15px 0;"></div>
+        
+        <p style="line-height: 1.6; font-size: 0.95rem; color: #ccc;">
+            Design, conceito e inovação. Todo o conteúdo presente neste portal é de propriedade exclusiva da <strong>Nuance</strong>. 
+            Protegemos nossa criatividade para garantir que a excelência que você vê aqui permaneça única e autêntica.
+        </p>
+        
+        <p style="font-size: 0.8rem; color: #D4AF37; margin-top: 20px;">
+            © 2026 Nuance - Todos os Direitos Reservados.<br>
+			por<br>
+			👇
+        </p>
+
+         <a href="Albatroz.htmla">
+  <img class="img-albatroz" src="IMG_Albatroz.png" alt="Logo Albatroz">
+        </a><br>
+
+		
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px;">
+    <h3 style="color: #0056b3; margin-bottom: 5px;">ALBATROZ</h3>
+                    <p><strong style="font-size: 11px; color: #4873D4;">• Front-End 🧑‍💻</strong> | <strong style="font-size: 11px; color: #E35252;">• Back-End 🧑‍💻</strong></p>
+    <p style="font-size: 10px; color: #555; line-height: 1.5;">
+        Somos especialistas em soluções <strong>Full Stack</strong>. Transformamos ideias em realidade com tecnologia de ponta, 
+        entregando atualizações constantes e alta performance para garantir a excelência na experiência do usuário.
+    </p>
+			</div>
+	 
+		
+		       <div style="margin-top: 25px; padding: 15px; background: rgba(212, 175, 55, 0.1); border: 1px dashed #D4AF37; border-radius: 10px;">
+    <h4 style="color: #D4AF37; margin: 0 0 10px 0; font-size: 9px;">QUER UM SITE COMO ESTE?</h4>
+    <p style="font-size: 10px; color: #fff; margin-bottom: 12px;">Desenvolvemos cardápios digitais e sistemas personalizados para o seu negócio.</p>
+    <a href="Albatroz.html"
+       target="_blank" 
+       style="text-decoration: none; background: #D4AF37; color: white; padding: 6px 12px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; display: inline-block;">
+       Mais Informações <i class="fas fa-user-cog"></i>
+
+    </a>
+     </div>
+
+		
+        <button onclick="fecharModalDireitos()" style="
+            margin-top: 20px; 
+            background: #D4AF37; 
+            border: none; 
+            color: #000; 
+            padding: 8px 25px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border-radius: 5px;
+            text-transform: uppercase;">
+			Fechar</button>
+	</div>
+</div>
+  <br><br><br><br>
+</footer>
+
+ 
+
+        
+        
+<script>
+//<-- botao do selo de propriedade Particula -->      
+function abrirModalDireitos() {
+    document.getElementById('modalDireitos').style.display = "block";
+}
+
+function fecharModalDireitos() {
+    document.getElementById('modalDireitos').style.display = "none";
+}
+
+// Fecha se clicar fora da caixa preta
+window.onclick = function(event) {
+    var modal = document.getElementById('modalDireitos');
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
+}
+//<-- Final do botao do selo de propriedade Particula -->
 
-    async function sincronizarDados() {
-        try {
-            const resp = await fetch(`${URL_CSV}&cache=${Date.now()}`);
-            const csvText = await resp.text();
-            const linhas = parseCSV(csvText);
 
-            const acumulador = {};
-            const statusConta = {}; // Para armazenar quem pediu conta
+    function handleInteractiveProfile(element) {
+    // Fecha outros perfis interativos se houver algum aberto
+    document.querySelectorAll('.barman-item-interactive').forEach(item => {
+        if(item !== element) item.classList.remove('active');
+    });
+    // Abre ou fecha o atual
+    element.classList.toggle('active');
+}
 
-            linhas.forEach(linha => {
-                let conteudoB = (linha[1] || "").trim().replace(/^"|"$/g, '');
-                let idC = (linha[2] || "").trim().replace(/^"|"$/g, '');
-                let statusE = (linha[4] || "").trim().replace(/^"|"$/g, ''); // Coluna E (índice 4)
+// Atualização da cor vibrante (usando sua variável existente)
+setInterval(() => {
+    const vibranteColors = ['#ff007f', '#00f2fe', '#d4af37', '#7000ff', '#00ff41'];
+    const nextColor = vibranteColors[Math.floor(Math.random() * vibranteColors.length)];
+    document.documentElement.style.setProperty('--vibrant-glow1', nextColor);
+}, 2500);
 
-                if (idC && !isNaN(idC)) {
-                    if (!acumulador[idC]) {
-                        acumulador[idC] = [];
-                    }
-                    if (conteudoB) {
-                        acumulador[idC].push(conteudoB);
-                    }
-                    // Verifica se a Coluna E contém "Conta"
-                    if (statusE.toLowerCase() === "conta") {
-                        statusConta[idC] = true;
-                    }
+
+
+
+//🚨🚨🚨👇👇👇 Rodapé Instagram rolante
+	
+    const icon = document.getElementById('insta-icon');
+const brandNameContainer = document.getElementById('brand-name');
+const text = "nuance _drinks";
+
+
+function revealText(str) {
+    let i = 0;
+    // Limpa o conteúdo antes de começar
+    brandNameContainer.innerHTML = "";
+    // Divide o texto em letras e as adiciona uma por uma
+    const interval = setInterval(() => {
+        if (i < str.length) {
+            brandNameContainer.innerHTML += str.charAt(i);
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 100); // Velocidade do surgimento das letras (100ms)
+}
+//🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨
+    
+    
+    let cart = [];
+    let currentFlavorProduct = null;
+    let currentPaymentLink = "#"; 
+    let activeDiscount = 0;
+    let freeShippingRequested = false;
+
+    // --- NOVA ESTRUTURA DE CUPONS POR BLOCOS ---
+    const CUPONS_POR_BLOCO = {
+	0: ["FRETE-D36S", "FRETE-WEMC", "FRETE-BLXT", "FRETE-G3RB", "FRETE-VXAY", "FRETE-Y8DB", "FRETE-DL7M", "FRETE-48B0", "FRETE-RKX2", "FRETE-8YHH", "FRETE-66X9", "FRETE-RR1C", "FRETE-O7XV", "FRETE-VU6V", "FRETE-V1PC", "FRETE-USJK", "FRETE-DMJA", "FRETE-4F04", "FRETE-ECKO", "FRETE-DO58", "FRETE-OWUC", "FRETE-EKKQ", "FRETE-8AHA", "FRETE-U9Q2", "FRETE-3Z0J", "FRETE-8FGS", "FRETE-HAIR", "FRETE-KTV5", "FRETE-0CYR", "FRETE-LUJZ", "FRETE-1LVV"], // 06:00 - 08:59
+	1: ["FRETE-JC8S", "FRETE-OMXH", "FRETE-N1KM", "FRETE-JD4N", "FRETE-34ZV", "FRETE-VEKY", "FRETE-D3RR", "FRETE-OZSL", "FRETE-L77K", "FRETE-LTZD", "HOY9", "FRETE-URN7", "FRETE-PESK", "FRETE-1SNZ", "FRETE-9EWO", "FRETE-3XNE", "FRETE-M1LK", "FRETE-2A3T", "FRETE-8XI7", "FRETE-X4AJ", "FRETE-LS20", "FRETE-IUF8", "FRETE-XXK1", "FRETE-34HJ", "FRETE-LQND", "FRETE-16PJ", "FRETE-YTTC", "FRETE-Z1UZ", "FRETE-UDVB", "FRETE-NWRL", "FRETE-PQ5E"], // 09:00 - 11:59
+	2: ["FRETE-EFYZ", "FRETE-8SKT", "FRETE-CD95", "FRETE-0WQN", "FRETE-UT01", "FRETE-V8H2", "FRETE-LDB9", "23B4", "CBIA", "T24R", "F9ZR", "JQKR", "OX8X", "4BUH", "QBBY", "Z29A", "NNM9", "ECMJ", "B1UK", "1BGU", "FGKF", "GP2W", "C7ML", "RK3Q", "448P", "GXJS", "A8HM", "5B2I", "IB05", "TMZI", "U1Q9"], // 12:00 - 14:59
+	3: ["FRETE-LJLA", "FRETE-Z0P8", "FRETE-OTUY", "FRETE-D91U", "FRETE-LESL", "FRETE-DJ6Z", "FRETE-FPCZ", "FRETE-Q10R", "FRETE-NPDS", "FRETE-BPDQ", "6VWR", "FBX6", "ZCXL", "XM5F", "M1NN", "1GJC", "6HBZ", "XL6D", "KD5H", "2C5Q", "HM6D", "5XVC", "OBGG", "FK9M", "11WJ", "9QRS", "BMHR", "EWEW", "MTHA", "4WTF", "OAJE"], // 15:00 - 17:59
+	4: ["FRETE-AB3G", "FRETE-Z2XD", "FRETE-K6DQ", "FRETE-7P7L", "FRETE-WDSM", "FRETE-Y90I", "7V79", "4T0Z", "I7UH", "7A0V", "19HY", "CRTA", "FPHY", "I8B8", "O23R", "BMGE", "FRETE-EDTK", "FRETE-HSFO", "T5WE", "SYW0", "MYF9", "0UC2", "MBJW", "7COM", "2WYY", "DI3B", "2AS7", "WJZH", "ZKUY", "TZTL", "Y8YL"], // 18:00 - 20:59
+	5: ["FRETE-XR4X", "FRETE-YC3U", "5E54", "K89F", "QO0Z", "4O02", "LXX4", "CDV0", "VY05", "0SW8", "YL3Z", "MCLW", "FIRQ", "EOGR", "BFST", "M34F", "415A", "7MW5", "DDFT", "F2WJ", "0YUJ", "ORT4", "IVE3", "5BQK", "Z60P", "ZYUY", "IIVM", "8RD8", "EZ0U", "JXUW", "SNG2"], // 21:00 - 23:59
+	6: ["FRETE-IFSI", "17XK", "DHH9", "FYTD", "Z3HS", "YUM8", "5WY1", "LBFX", "ODTD", "EJRU", "WCC8", "CEAH", "ZH2R", "T7CB", "L1Q5", "1B8V", "OXET", "OX5K", "B9GR", "S2MX", "NVHP", "WI5L", "MD1X", "1H6J", "NPVR", "NTJG", "6A25", "H13W", "JH2L", "II3D", "BFXF"], // 00:00 - 02:59
+	7: ["FRETE-AMEG", "TXR9", "S378", "9S9J", "XM9L", "ZNAM", "XK3G", "T89O", "R68A", "D276", "3SZK", "OJY9", "7G17", "P5ZK", "J6K4", "ON49", "9H21", "MGBE", "2OJ8", "V0EK", "TAPW", "FF0Q", "56T6", "QKN3", "OJAC", "NJ91", "LBRE", "ERCF", "ADRN", "POOF", "ZARX"] // 03:00 - 5:59
+};
+
+     const linksDePagamentoFixos = {
+        "1.00": "https://mpago.la/2AXmnns", "2.00": "https://mpago.la/1XRx3MU", "3.00": "https://mpago.la/2hCQdie",
+        "4.00": "https://mpago.la/21V68Ki", "5.00": "https://mpago.la/2GCnr3j", "6.00": "https://mpago.la/127jvNn",
+        "7.00": "https://mpago.la/2p6uptE", "8.00": "https://mpago.la/11j2Jua", "9.00": "https://mpago.la/1eFbxkN",
+        "10.00": "https://mpago.la/2cRxjg5", "11.00": "https://mpago.la/2LS6XMT", "12.00": "https://mpago.la/1ssdztd",
+        "13.00": "https://mpago.la/2pEQ3rJ", "14.00": "https://mpago.la/2ShtRu7", "15.00": "https://mpago.la/2MdLA1J",
+        "16.00": "https://mpago.la/122M9xy", "17.00": "https://mpago.la/1hZpFv4", "18.00": "https://mpago.la/2cvpYLD",
+        "19.00": "https://mpago.la/2fHzer1", "20.00": "https://mpago.la/2d4EhNH", "21.00": "https://mpago.la/2wtPbWJ",
+        "22.00": "https://mpago.la/1VEbPD6", "23.00": "https://mpago.la/1u4N2eZ", "24.00": "https://mpago.la/2tz3Thg",
+        "25.00": "https://mpago.la/24MoD81", "26.00": "https://mpago.la/1gQ85w8", "27.00": "https://mpago.la/2ncRJDR",
+        "28.00": "https://mpago.la/1rHT6fQ", "29.00": "https://mpago.la/1wP8yiX", "30.00": "https://mpago.la/1wEbmXA",
+        "31.00": "https://mpago.la/23tCjAH", "32.00": "https://mpago.la/1H7ACLr", "33.00": "https://mpago.la/2P1Snuu",
+        "34.00": "https://mpago.la/2dM8pXF", "35.00": "https://mpago.la/2ccdL4T", "36.00": "https://mpago.la/2LUutRb",
+        "37.00": "https://mpago.la/2SaBCdk", "38.00": "https://mpago.la/32a4XhN", "39.00": "https://mpago.la/1uK9SV6",
+        "40.00": "https://mpago.la/22fHXUh", "41.00": "https://mpago.la/2FJM5SR", "42.00": "https://mpago.la/2majQ3e",
+        "43.00": "https://mpago.la/2xuPWxe", "44.00": "https://mpago.la/1xnrgBU", "45.00": "https://mpago.la/2YxWyeN",
+        "46.00": "https://mpago.la/1C8B2Ys", "47.00": "https://mpago.la/2BHbwKb", "48.00": "https://mpago.la/2wJ79yX",
+        "49.00": "https://mpago.la/1q1CXu8", "50.00": "https://mpago.la/18PNJgh", "51.00": "https://mpago.la/29ngSEP",
+        "52.00": "https://mpago.la/1wpPNU6", "53.00": "https://mpago.la/2w4JghY", "54.00": "https://mpago.la/2wP8Zzy",
+        "55.00": "https://mpago.la/1uNDuE1", "56.00": "https://mpago.la/2HwcPeo", "57.00": "https://mpago.la/2SrqAtv",
+        "58.00": "https://mpago.la/2QddsUQ", "59.00": "https://mpago.la/1KyezXR", "60.00": "https://mpago.la/32XUkFX",
+        "61.00": "https://mpago.la/2LdRTmk", "62.00": "https://mpago.la/31yQrfo", "63.00": "https://mpago.la/2Nj6SQ3",
+        "64.00": "https://mpago.la/1AUtYYJ", "65.00": "https://mpago.la/2dJLWg6", "66.00": "https://mpago.la/2Qq6ofn",
+        "67.00": "https://mpago.la/2HSYSG8", "68.00": "https://mpago.la/2agtz9z", "69.00": "https://mpago.la/1yzPBDV",
+        "70.00": "https://mpago.la/19j57aj", "71.00": "https://mpago.la/2NN176T", "72.00": "https://mpago.la/2bgb4hq",
+        "73.00": "https://mpago.la/1Pjn7DD", "74.00": "https://mpago.la/1bnsqvS", "75.00": "https://mpago.la/1ScZwvW",
+        "76.00": "https://mpago.la/2pF999n", "77.00": "https://mpago.la/25ZZdoS", "78.00": "https://mpago.la/1df8NXT",
+        "79.00": "https://mpago.la/2c5ZvKh", "80.00": "https://mpago.la/2StD47t", "81.00": "https://mpago.la/1g2b3ky",
+        "82.00": "https://mpago.la/1EQriMV", "83.00": "https://mpago.la/2Ur8gAJ", "84.00": "https://mpago.la/12trufq",
+        "85.00": "https://mpago.la/2UkJGkF", "86.00": "https://mpago.la/1N2Zw5R", "87.00": "https://mpago.la/2QSwF7p",
+        "88.00": "https://mpago.la/2CnEweW", "89.00": "https://mpago.la/1qjGyST", "90.00": "https://mpago.la/18ZpYMG",
+        "91.00": "https://mpago.la/2jXbcve", "92.00": "https://mpago.la/1G4GRb4", "93.00": "https://mpago.la/1G4GRb4",
+        "94.00": "https://mpago.la/2L5SfaX", "95.00": "https://mpago.la/1T8HvbD", "96.00": "https://mpago.la/16i17Um",
+        "97.00": "https://mpago.la/2ULjkPj", "98.00": "https://mpago.la/2WWWm1m", "99.00": "https://mpago.la/2wQMxrn",
+        "100.00": "https://mpago.la/14fLE5V",
+    };
+    // AQUI ESTÁ A ÚNICA FUNÇÃO ONLOAD QUE IMPORTA:
+    window.onload = function() {
+        // --- 1. Lógica da Animação do Instagram com Observer ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    setTimeout(() => {
+                        icon.classList.add('start-animation');
+                        revealText(text);
+                    }, 500);
+                    observer.unobserve(entry.target); // Executa apenas uma vez
                 }
             });
+        }, { threshold: 0.5 });
 
-            for (let i = 1; i <= 20; i++) {
-                let currentId = (100 + i).toString();
-                let display = document.getElementById(`res-${currentId}`);
-                let card = document.getElementById(`card-${currentId}`);
-                
-                // Aplica ou remove a classe de piscar
-                if (statusConta[currentId]) {
-                    card.classList.add('status-conta');
-                } else {
-                    card.classList.remove('status-conta');
-                }
+        observer.observe(document.querySelector('.logo-container45'));
 
-                if (acumulador[currentId] && acumulador[currentId].length > 0) {
-                    display.innerText = acumulador[currentId].join('\n---\n');
-                    display.style.color = "#00f3ff";
-                } else {
-                    display.innerText = "Livre / Sem Dados";
-                    display.style.color = "rgba(255,255,255,0.3)";
-                }
-            }
-
-        } catch (e) {
-            console.error("Erro na sincronização:", e);
+        // --- 2. Lógica Original do Carrinho e Loja ---
+        const savedCart = localStorage.getItem('beeDrinksCart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+            updateUI();
         }
-    }
+        // Chamada movida para dentro do carregamento da planilha para garantir sincronia
+    };
 
-    function abrirModal(numero, id) {
-        const textoCompleto = document.getElementById(`res-${id}`).innerText;
-        
-        let total = 0;
-        // Divide o texto em linhas para processar cada item individualmente
-        const linhas = textoCompleto.split('\n');
-        
-        linhas.forEach(linha => {
-            if (linha.trim() === "" || linha.trim() === "---") return;
+    function saveCart() { localStorage.setItem('beeDrinksCart', JSON.stringify(cart)); }
 
-            // 1. Pega a quantidade (procura número antes de 'x')
-            let qtd = 1;
-            const matchQtd = linha.match(/^(\d+)x/);
-            if (matchQtd) qtd = parseInt(matchQtd[1]);
+    const sliders = document.querySelectorAll('.carousel-container');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-            // 2. Pega o valor dentro de () limpando "R$" e espaços
-            const matchValor = linha.match(/\((?:R\$\s*)?([\d.,]+)\)/i);
-            if (matchValor) {
-                let valorTexto = matchValor[1].replace(',', '.');
-                let valorUnitario = parseFloat(valorTexto);
-                if (!isNaN(valorUnitario)) {
-                    total += (qtd * valorUnitario);
-                }
-            }
+    sliders.forEach(slider => {
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
         });
+        slider.addEventListener('mouseleave', () => isDown = false);
+        slider.addEventListener('mouseup', () => isDown = false);
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+    });
 
-        document.getElementById('modal-title').innerText = `MESA ${numero} - TOTAL: R$ ${total.toFixed(2)}`;
-        document.getElementById('display-pedidos').innerText = textoCompleto;
-        document.getElementById('modal').style.display = 'flex';
-    }
+    // VARIÁVEIS GLOBAIS DE HORÁRIO (Serão sobrescritas pela planilha)
+    let horaAberturaGlobal = 00;
+    let minutoAberturaGlobal = 02;
+    let horaFechamentoGlobal = 23;
+    let minutoFechamentoGlobal = 59;
 
-    function fecharModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
+    function checkStoreStatus() {
+        const statusElement = document.getElementById('store-status');
+        const now = new Date();
+        
+        // Converte tudo para minutos totais desde o início do dia
+        const minutosAgora = (now.getHours() * 60) + now.getMinutes();
+        const minutosInicio = (horaAberturaGlobal * 60) + minutoAberturaGlobal;
+        const minutosFim = (horaFechamentoGlobal * 60) + minutoFechamentoGlobal;
 
-    function parseCSV(str) {
-        let arr = [];
-        let quote = false;
-        let col = 0;
-        let row = 0;
-        for (let c = 0; c < str.length; c++) {
-            let char = str[c], nextChar = str[c+1];
-            arr[row] = arr[row] || [];
-            arr[row][col] = arr[row][col] || '';
-            if (char == '"' && quote && nextChar == '"') { arr[row][col] += char; c++; continue; }
-            if (char == '"') { quote = !quote; continue; }
-            if (char == ',' && !quote) { col++; continue; }
-            if (char == '\r' && nextChar == '\n' && !quote) { row++; col = 0; c++; continue; }
-            if (char == '\n' && !quote) { row++; col = 0; continue; }
-            arr[row][col] += char;
+        if (minutosAgora >= minutosInicio && minutosAgora <= minutosFim) {
+            statusElement.innerHTML = '<span class="dot dot-open"></span> Aberto agora';
+        } else {
+            statusElement.innerHTML = '<span class="dot dot-closed"></span> Fechado agora';
         }
-        return arr;
     }
 
-    sincronizarDados();
-    setInterval(sincronizarDados, 10000);
-</script>
+    function isStoreOpen() {
+        const status = document.getElementById('store-status').innerText;
+        return status.includes("Aberto");
+    }
 
+    // NOVA FUNÇÃO: Som de Feedback
+    function playSuccessSound() {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // Nota lá
+        oscillator.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.1);
+        
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.2);
+    }
+
+    // NOVA FUNÇÃO: Animar botão e Joinha Voador
+    function animateAdd(btn) {
+        playSuccessSound();
+        
+        // Início da animação do Joinha
+        const thumb = document.createElement('div');
+        thumb.innerHTML = '👍';
+        thumb.className = 'thumb-animation';
+        
+        // Pega as posições
+        const btnRect = btn.getBoundingClientRect();
+        const cartAnchor = document.getElementById('cart-anchor').getBoundingClientRect();
+        
+        // Posiciona no botão inicialmente
+        thumb.style.left = btnRect.left + (btnRect.width / 2) + 'px';
+        thumb.style.top = btnRect.top + 'px';
+        
+        document.body.appendChild(thumb);
+        
+        // Pequeno timeout para o navegador processar a posição inicial antes de animar
+        setTimeout(() => {
+            thumb.style.left = cartAnchor.left + (cartAnchor.width / 2) + 'px';
+            thumb.style.top = cartAnchor.top + 'px';
+            thumb.style.opacity = '0';
+            thumb.style.transform = 'scale(0.5) rotate(45deg)';
+        }, 100); // Aumentado um pouco o delay inicial para suavidade
+        
+        // Remove o elemento após a animação (aumentado para 1.6s para casar com a transição lenta)
+        setTimeout(() => {
+            thumb.remove();
+        }, 1600);
+
+        const originalText = btn.innerText;
+        btn.classList.add('btn-added-success');
+        btn.innerText = "Adicionado! ✓";
+        setTimeout(() => {
+            btn.classList.remove('btn-added-success');
+            btn.innerText = originalText;
+        }, 1000);
+    }
+
+    function addToCart(name, price, image) {
+        if (!isStoreOpen()) {
+            alert("Desculpe, estamos fechados no momento. Não é possível realizar pedidos.");
+            return;
+        }
+        const item = cart.find(i => i.name === name);
+        if (item) item.quantity++;
+        else cart.push({ name, price, image, quantity: 1 });
+        saveCart();
+        updateUI();
+    }
+
+    function openFlavorModal(name, price, flavors, image) {
+        if (!isStoreOpen()) {
+            alert("Desculpe, estamos fechados no momento.");
+            return;
+        }
+        currentFlavorProduct = { name, price, image };
+        document.getElementById('flavor-title').innerText = name;
+        const container = document.getElementById('flavor-options');
+        container.innerHTML = flavors.map(f => `<button class="flavor-btn" onclick="addFlavorToCart('${f}', this)">${f}</button>`).join('');
+        document.getElementById('flavor-modal').style.display = 'block';
+    }
+
+    function addFlavorToCart(flavor, btn) {
+        // Chamamos a animação enviando o botão clicado no modal
+        animateAdd(btn);
+        addToCart(`${currentFlavorProduct.name} (${flavor})`, currentFlavorProduct.price, currentFlavorProduct.image);
+        // Pequeno atraso para fechar o modal e deixar ver o joinha saindo (Aumentado para acompanhar a lentidão)
+        setTimeout(() => {
+            closeModal('flavor-modal');
+        }, 500);
+    }
+
+    function applyCoupon() {
+        const input = document.getElementById('coupon-input').value.toUpperCase();
+        const msg = document.getElementById('coupon-msg');
+        activeDiscount = 0;
+        freeShippingRequested = false;
+
+        const agora = new Date();
+        const horaAtual = agora.getHours();
+        
+        let blocoAtual;
+        if (horaAtual >= 6 && horaAtual < 9) blocoAtual = 0;
+        else if (horaAtual >= 9 && horaAtual < 12) blocoAtual = 1;
+        else if (horaAtual >= 12 && horaAtual < 15) blocoAtual = 2;
+        else if (horaAtual >= 15 && horaAtual < 18) blocoAtual = 3;
+        else if (horaAtual >= 18 && horaAtual < 21) blocoAtual = 4;
+        else if (horaAtual >= 21 && horaAtual < 24) blocoAtual = 5;
+        else if (horaAtual >= 0 && horaAtual < 3) blocoAtual = 6;
+        else if (horaAtual >= 3 && horaAtual < 6) blocoAtual = 7;
+
+        const cuponsValidosDesteBloco = CUPONS_POR_BLOCO[blocoAtual];
+
+        // VERIFICAÇÃO DE FRETE GRÁTIS (FRETEGRATIS OU BLOCOS 0-7)
+        let cupomDeBlocoDigitado = false;
+        let cupomDeOutroBloco = false;
+
+        // Verifica se o cupom digitado pertence ao bloco atual
+        if (cuponsValidosDesteBloco.includes(input)) {
+            cupomDeBlocoDigitado = true;
+        } else {
+            // Verifica se pertence a qualquer outro bloco
+            for (let b in CUPONS_POR_BLOCO) {
+                if (CUPONS_POR_BLOCO[b].includes(input)) {
+                    cupomDeOutroBloco = true;
+                }
+            }
+        }
+
+        if (input === "FRETEGRATIS" || cupomDeBlocoDigitado) {
+            freeShippingRequested = true;
+            msg.innerHTML = "<span style='color:green'>Cupom de frete grátis ativado (Válido apenas para Delivery).</span>";
+        } else if (cupomDeOutroBloco) {
+            msg.innerHTML = "<span style='color:orange'>Este cupom não está ativo neste horário.</span>";
+        } else if (input === "10%") {
+            activeDiscount = 0.10;
+            msg.innerHTML = "<span style='color:green'>Desconto de 10% aplicado!</span>";
+        } else if (input === "5%") {
+            activeDiscount = 0.05;
+            msg.innerHTML = "<span style='color:green'>Desconto de 5% aplicado!</span>";
+        } else {
+            msg.innerHTML = "<span style='color:red'>Cupom inválido.</span>";
+        }
+        updateUI();
+    }
+
+    function updateUI() {
+        let totalItems = cart.reduce((a, b) => a + b.quantity, 0);
+        let subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        let totalComDesconto = subtotal - (subtotal * activeDiscount);
+        
+        const type = document.getElementById('delivery-type')?.value;
+        
+        if (totalItems > 0) {
+            if (type === 'delivery') {
+                if (!freeShippingRequested) {
+                    totalComDesconto += 10;
+                }
+            }
+        }
+
+        // Lógica da bolinha do carrinho no topo com quantidade
+        const cartDot = document.getElementById('cart-dot');
+        if (totalItems > 0) {
+            cartDot.style.display = 'flex';
+            cartDot.innerText = totalItems;
+        } else {
+            cartDot.style.display = 'none';
+            // FECHA O CARRINHO SE FICAR VAZIO
+            if(document.getElementById('cart-modal')) document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        if(document.getElementById('modal-total')) document.getElementById('modal-total').innerText = totalComDesconto.toFixed(2);
+    }
+
+    function renderCartItems() {
+        document.getElementById('cart-items-list').innerHTML = cart.map(item => `
+            <div class="cart-row">
+                <img src="${item.image}" class="cart-img">
+                <div style="flex:1; text-align: left;">
+                    <strong>${item.name}</strong><br>
+                    R$ ${(item.price * item.quantity).toFixed(2)}
+                </div>
+                <div class="qty-controls">
+                    <button onclick="changeQuantity('${item.name}', -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="changeQuantity('${item.name}', 1)">+</button>
+                </div>
+                <button class="btn-remove" onclick="removeItem('${item.name}')">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>`).join('');
+    }
+
+    function changeQuantity(name, delta) {
+        const item = cart.find(i => i.name === name);
+        if(item) {
+            item.quantity += delta;
+            if(item.quantity <= 0) cart = cart.filter(i => i.name !== name);
+        }
+        saveCart();
+        updateUI(); 
+        renderCartItems();
+    }
+
+    function removeItem(name) {
+        cart = cart.filter(i => i.name !== name);
+        saveCart();
+        updateUI();
+        renderCartItems();
+    }
+
+    function toggleFields() {
+        const type = document.getElementById('delivery-type').value;
+        // Removido mesa e retirada, mantendo apenas delivery
+        document.getElementById('fields-delivery').style.display = type === 'delivery' ? 'block' : 'none';
+        document.getElementById('delivery-warning').style.display = type === 'delivery' ? 'block' : 'none';
+        updateUI();
+    }
+
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g,'');
+        if(cpf == '') return false;
+        if (cpf.length != 11 || cpf == "00000000000" || cpf == "11111111111" || cpf == "22222222222" || cpf == "33333333333" || cpf == "44444444444" || cpf == "55555555555" || cpf == "66666666666" || cpf == "77777777777" || cpf == "88888888888" || cpf == "99999999999") return false;
+        let add = 0;
+        for (let i=0; i < 9; i ++) add += parseInt(cpf.charAt(i)) * (10 - i);
+        let rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(9))) return false;
+        add = 0;
+        for (let i = 0; i < 10; i ++) add += parseInt(cpf.charAt(i)) * (11 - i);
+        rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(10))) return false;
+        return true;
+    }
+
+    // Função de validação de CEP simples
+    function validarCEP(cep) {
+        cep = cep.replace(/[^\d]+/g,'');
+        return cep.length === 8;
+    }
+
+    function sendWhatsApp() {
+        const type = document.getElementById('delivery-type').value;
+        const totalStr = document.getElementById('modal-total').innerText;
+        
+        if (type === 'delivery') {
+            const cepInput = document.getElementById('dev-CEP');
+            if (!validarCEP(cepInput.value)) {
+                cepInput.classList.add('input-error');
+                alert("Por favor, insira um CEP válido para o delivery.");
+                return;
+            }
+            cepInput.classList.remove('input-error');
+        }
+
+        currentPaymentLink = linksDePagamentoFixos[totalStr] || "#";
+        const payBtn = document.getElementById('pay-link');
+        payBtn.href = currentPaymentLink;
+        payBtn.style.display = currentPaymentLink === "#" ? "none" : "block";
+
+        document.getElementById('pay-total').innerText = totalStr;
+        let produtosTxt = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+        
+        let dadosParaPlanilha = {
+            produtos: produtosTxt, total: totalStr, coleta: type,
+            nome: "", contato: "", cpf: "", cep: "", bairro: "", rua: "", numero: "", comp: "",
+            pagamentoLink: currentPaymentLink // NOVA VARIÁVEL AQUI
+        };
+
+        if (type === 'delivery') {
+            dadosParaPlanilha.nome = document.getElementById('dev-nome').value;
+            dadosParaPlanilha.contato = document.getElementById('dev-contato').value;
+            dadosParaPlanilha.cep = document.getElementById('dev-CEP').value;
+            dadosParaPlanilha.bairro = document.getElementById('dev-bairro').value;
+            dadosParaPlanilha.rua = document.getElementById('dev-rua').value;
+            dadosParaPlanilha.numero = document.getElementById('dev-num').value;
+            dadosParaPlanilha.comp = document.getElementById('dev-comp').value;
+        }
+
+        enviarParaPlanilha(dadosParaPlanilha);
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function finalizarWhatsApp() {
+        playSuccessSound();
+        const type = document.getElementById('delivery-type').value;
+        let msg = `*NOVO PEDIDO - NUANCE*\n\n`;
+        
+        if (type === 'delivery') {
+            msg += `*Cliente:* ${document.getElementById('dev-nome').value}\n*WhatsApp:* ${document.getElementById('dev-contato').value}\n*CEP:* ${document.getElementById('dev-CEP').value}\n*Endereço:* ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}\n*Bairro:* ${document.getElementById('dev-bairro').value}\n`;
+            const complemento = document.getElementById('dev-comp').value;
+            if (complemento) msg += `*Comp:* ${complemento}\n`;
+            
+            if (freeShippingRequested) {
+                msg += `*Entrega:* Delivery (FRETE GRÁTIS APLICADO)\n`;
+            } else {
+                msg += `*Entrega:* Delivery (+ Taxa R$ 10,00)\n`;
+            }
+        }
+
+        if (activeDiscount > 0) msg += `*Desconto Aplicado:* ${activeDiscount * 100}%\n`;
+
+        msg += `\n*ÍTENS DO PEDIDO:*\n`;
+        cart.forEach(i => msg += `✅ ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})\n`);
+        
+        msg += `\n*TOTAL A PAGAR: R$ ${document.getElementById('pay-total').innerText}*`;
+        
+        if(currentPaymentLink !== "#") {
+            msg += `\n\n*LINK DE PAGAMENTO:* \n${currentPaymentLink}`;
+        }
+        
+        msg += `\n\n_Por favor, não esqueça de nos enviar o comprovante de pagamento._`;
+        
+        localStorage.removeItem('beeDrinksCart');
+        cart = [];
+        window.open(`https://wa.me/5562994476497?text=${encodeURIComponent(msg)}`);
+        location.reload();
+    }
+
+    function filterCategory(cat) {
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        if (event) event.target.classList.add('active');
+        document.querySelectorAll('.menu-section').forEach(s => {
+            s.style.display = (cat === 'all' || s.dataset.category === cat) ? 'block' : 'none';
+        });
+    }
+
+    function mascaraCPF(i) {
+        let v = i.value.replace(/\D/g,"");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+        i.value = v;
+    }
+
+    // Função de Máscara de CEP
+    function mascaraCEP(i) {
+        let v = i.value.replace(/\D/g,"");
+        v = v.replace(/(\d{5})(\d)/,"$1-$2");
+        i.value = v;
+    }
+
+    function toggleCart() { 
+        const m = document.getElementById('cart-modal'); 
+        
+        // BLOQUEIA A ENTRADA SE O CARRINHO ESTIVER VAZIO
+        if (cart.length === 0) {
+            alert("Seu carrinho está vazio! Adicione algum drink primeiro.");
+            return;
+        }
+
+        renderCartItems(); 
+        m.style.display = m.style.display === 'block' ? 'none' : 'block'; 
+    }
+
+    function openCheckout() { document.getElementById('cart-modal').style.display = 'none'; document.getElementById('checkout-modal').style.display = 'block'; }
+    function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; document.getElementById('cart-modal').style.display = 'block'; }
+    function closePayment() { document.getElementById('payment-modal').style.display = 'none'; document.getElementById('checkout-modal').style.display = 'block'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function enviarParaPlanilha(dados) {
+        const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCadaja6iLfwVL7fH6aVs_iXTJpZgBREY-Ju98Zqg3KKslWg/formResponse";
+        const formData = new FormData();
+        formData.append("entry.62718261", dados.produtos);        
+        formData.append("entry.1278482765", dados.nome);
+        formData.append("entry.1120754933", dados.contato);
+        // Se for delivery envia CEP no campo de CPF da planilha para não quebrar a ordem, ou ajuste conforme sua planilha
+        formData.append("entry.143126943", dados.coleta === 'delivery' ? dados.cep : dados.cpf);             
+        formData.append("entry.1878038120", dados.bairro);           
+        formData.append("entry.1399400806", dados.rua);                 
+        formData.append("entry.764712754", dados.numero);           
+        formData.append("entry.1697072560", dados.comp);        
+        formData.append("entry.1857638858", dados.coleta);          
+        formData.append("entry.1235511550", dados.total);            
+        
+        // ACRESCENTADO O LINK DE PAGAMENTO AO CAMPO DE COMPLEMENTO OU QUALQUER OUTRO DESEJADO
+        if(dados.pagamentoLink !== "#") {
+             formData.append("entry.1901397709", " | LINK: " + dados.pagamentoLink);
+        }
+
+        fetch(FORM_URL, { method: "POST", mode: "no-cors", body: formData });
+    }
+        
+        
+//=======================================       
+//===Mensagem Avidos Aleatorios========== 
+//=======================================
+// 1. Mensagem de Boas-Vindas/Primeira Mensagem (Ser sempre a primeira vez)
+const primeiraMensagem = "O Drink **CaipFrutas** foi o mais pedido hoje!";
+
+// 2. Array com as mensagens que irão ALTERNAR
+const mensagensAlternadas = [
+    "**5 pessoas** hoje fizeram seus próprios **Copões**!",
+    "**Victor** acabou de usar o **Cupom** de Frete Grátis.",
+    "Há **3 usuários** navegando e montando seus pedidos neste momento.",
+    "**Fernando** acabou de usar o **Cupom** de 5 reais de desconto adquirido no Instagram **Nuance**.",
+    "O tempo das entregas pode subir devido ao alto volume de pedidos!"
+    ];
+
+// Função para embaralhar um array (algoritmo Fisher-Yates)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+        
+    }
+    return array;
+}
+
+// Verifica se o usuário já visitou o site
+const isFirstVisit = localStorage.getItem('hasVisited') === null;
+localStorage.setItem('hasVisited', 'true'); // Marca a visita para a próxima vez
+
+let mensagensParaExibir = [];
+
+if (isFirstVisit) {
+    // Na primeira visita, exibe a primeira mensagem, e depois o resto embaralhado
+    mensagensParaExibir.push(primeiraMensagem);
+    mensagensParaExibir = mensagensParaExibir.concat(shuffleArray([...mensagensAlternadas]));
+} else {
+    // Em visitas subsequentes, embaralha todas as mensagens, incluindo a "Negroni"
+    mensagensParaExibir = shuffleArray([primeiraMensagem, ...mensagensAlternadas]);
+}
+
+
+let currentIndex = 0; // Índice inicial da mensagem
+const boxElement = document.getElementById('atencao-box');
+const conteudoElement = document.getElementById('mensagem-conteudo');
+
+// Configurações de tempo
+const tempoExibicao = 6000; // Tempo que a mensagem fica VISÍVEL (6 segundos)
+const tempoIntervalo = 40000; // Tempo TOTAL do ciclo (40 segundos)
+const tempoEspera = tempoIntervalo - tempoExibicao; // Tempo que fica invisível (21 segundos)
+
+function showNextMessage() {
+    let message = mensagensParaExibir[currentIndex];
+    conteudoElement.innerHTML = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    boxElement.style.display = 'flex';
+    setTimeout(() => {
+        boxElement.style.display = 'none';
+        setTimeout(showNextMessage, tempoEspera);
+    }, tempoExibicao);
+    currentIndex = (currentIndex + 1) % mensagensParaExibir.length;
+}
+
+// Inicia o ciclo de mensagens após um atraso de 4 segundos (4000 ms)
+setTimeout(showNextMessage, 4000);
+  
+  
+const LINK_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_RkV57KGMKPE8d55DWU1OtoWiBgqvuC0ec5bVQa8uSxUUSA2nBMByHyxWkJ-IdVrPGywqY0CaaGmF/pub?output=csv";
+
+async function carregarDadosDaPlanilha() {
+    try {
+        const resposta = await fetch(LINK_CSV);
+        const csvTexto = await resposta.text();
+        const linhas = csvTexto.split('\n').filter(l => l.trim() !== '');
+        if (linhas.length <= 1) return;
+
+        for (let i = 1; i < linhas.length; i++) {
+            const colunas = linhas[i].split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+            if (colunas.length >= 6) { 
+                const pIDStr = colunas[1] ? colunas[1].replace(/"/g, '').trim() : ''; 
+                const pNome = colunas[2] ? colunas[2].replace(/"/g, '').trim() : ''; 
+                const pPreco = colunas[3] ? colunas[3].replace(/"/g, '').trim() : ''; 
+                const pImagem = colunas[4] ? colunas[4].replace(/"/g, '').trim() : ''; 
+                const pSaboresRaw = colunas[5] ? colunas[5].replace(/"/g, '').trim() : '';
+                const pSaboresArray = pSaboresRaw ? pSaboresRaw.split(',').map(s => s.trim()) : [];
+                
+                // NOVAS COLUNAS CAPTURADAS
+                const pOldPrice = colunas[7] ? colunas[7].replace(/"/g, '').trim() : ''; // Coluna H
+                const pML = colunas[8] ? colunas[8].replace(/"/g, '').trim() : ''; // Coluna I (Reconhece qualquer texto/número)
+
+                if(!pIDStr || !pNome) continue;
+                const pID = parseInt(pIDStr);
+
+                // --- LOGICA STATUS 999 ---
+                if (pID === 100) {
+                    const regexAberto = /Aberto:?\s*(\d{2}):(\d{2})/i;
+                    const regexFechado = /Fechado:?\s*(\d{2}):(\d{2})/i;
+                    const matchAberto = pNome.match(regexAberto);
+                    const matchFechado = pNome.match(regexFechado);
+
+                    if (matchAberto && matchFechado) {
+                        horaAberturaGlobal = parseInt(matchAberto[1]);
+                        minutoAberturaGlobal = parseInt(matchAberto[2]);
+                        horaFechamentoGlobal = parseInt(matchFechado[1]);
+                        minutoFechamentoGlobal = parseInt(matchFechado[2]);
+                        if (typeof checkStoreStatus === "function") checkStoreStatus();
+                    }
+                    continue; 
+                }
+
+                let cardExistente = document.querySelector(`.product-card[data-id="${pID}"]`);
+                if (!cardExistente) {
+                    const novaEstrutura = `
+                        <div class="product-card" data-id="${pID}">
+                            <img src="${pImagem || 'imgs/Logo-principal.jpg'}">
+                            <h3>${pNome}</h3>
+                            ${pOldPrice ? `<span class="old-price">${pOldPrice}</span>` : ''}
+                            <span class="price">R$ ${pPreco} ${pML ? `<span class="badge-ml">${pML}</span>` : ''}</span>
+                            <button class="btn-add"></button>
+                        </div>`;
+                    let targetCategory = "alcool"; 
+                    if (pID >= 200 && pID <= 299) targetCategory = "sem-alcool";
+                    else if (pID >= 300 && pID <= 399) targetCategory = "copao";
+                    else if (pID >= 400 && pID <= 499) targetCategory = "combo";
+                    const section = document.querySelector(`.menu-section[data-category="${targetCategory}"]`);
+                    if (section) {
+                        const containerCarrossel = section.querySelector('.carousel-container');
+                        if (containerCarrossel) containerCarrossel.insertAdjacentHTML('beforeend', novaEstrutura);
+                        cardExistente = document.querySelector(`.product-card[data-id="${pID}"]`);
+                    }
+                }
+
+                if (cardExistente) {
+                    cardExistente.querySelector('h3').innerText = pNome;
+                    if (pImagem) cardExistente.querySelector('img').src = pImagem;
+                    
+                    // Atualiza Preços e ML
+                    let htmlPrecos = '';
+                    if (pOldPrice) htmlPrecos += `<span class="old-price">${pOldPrice}</span> `;
+                    htmlPrecos += `<span class="price">R$ ${pPreco} ${pML ? `<span class="badge-ml">${pML}</span>` : ''}</span>`;
+                    
+                    // Seleciona ou cria o container de preço se necessário, mas aqui apenas atualizamos o innerHTML do card para os valores novos
+                    // Para manter a estrutura sem otimizar, injetamos diretamente:
+                    const oldPriceSpan = cardExistente.querySelector('.old-price');
+                    if(pOldPrice) {
+                        if(oldPriceSpan) oldPriceSpan.innerText = pOldPrice;
+                        else cardExistente.querySelector('h3').insertAdjacentHTML('afterend', `<span class="old-price">${pOldPrice}</span>`);
+                    } else if(oldPriceSpan) {
+                        oldPriceSpan.remove();
+                    }
+
+                    const priceSpan = cardExistente.querySelector('.price');
+                    priceSpan.innerHTML = `R$ ${pPreco} ${pML ? `<span class="badge-ml">${pML}</span>` : ''}`;
+
+                    const precoNumerico = parseFloat(pPreco.replace('R$', '').replace(',', '.').trim());
+                    let btnAdd = cardExistente.querySelector('.btn-add');
+                    if (pSaboresArray.length > 0) {
+                        btnAdd.className = "btn-add btn-flavor";
+                        btnAdd.innerText = "Escolher Sabor";
+                        btnAdd.onclick = () => openFlavorModal(pNome, precoNumerico, pSaboresArray, pImagem);
+                    } else {
+                        btnAdd.className = "btn-add";
+                        btnAdd.innerText = "Adicionar";
+                        btnAdd.onclick = function() { animateAdd(this); addToCart(pNome, precoNumerico, pImagem); };
+                    }
+                }
+            }
+        }
+        checkStoreStatus();
+    } catch (e) { console.error("Erro ao carregar dados:", e); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if(document.getElementById('ano-mini')) document.getElementById('ano-mini').textContent = new Date().getFullYear();
+    carregarDadosDaPlanilha();
+});
+  
+</script>
 </body>
 </html>
